@@ -1,3 +1,5 @@
+#include "corpse_primitives.h"
+
 #include <jni.h>
 #include <unistd.h>
 
@@ -15,5 +17,5 @@ extern "C" JNIEXPORT jboolean JNICALL
 Java_com_Noumenous_CORPSE_Converter_NativeSubstrate_isBaselineStateValid(JNIEnv*, jobject) {
     // This verifies the starter's fixed state marker only. It is not a storage
     // integrity check, checksum, hardware audit, or self-healing mechanism.
-    return kBaselineState == 0xC7 ? JNI_TRUE : JNI_FALSE;
+    return corpse::encode_octet(24U, 7U) == kBaselineState ? JNI_TRUE : JNI_FALSE;
 }

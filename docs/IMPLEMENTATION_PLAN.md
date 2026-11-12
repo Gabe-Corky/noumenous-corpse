@@ -2,12 +2,14 @@
 
 This plan builds an Android host around the repository's existing browser-based architecture explorers without conflating the simulator with a functioning native substrate.
 
-## Milestone 0 — Android foundation (this change)
+## Milestone 0 — Android foundation and visual host (in progress)
 
 - Preserve the three root-level HTML simulators and GitHub Pages behavior.
 - Add an isolated `android/` Gradle project, Compose host, ARM64 C++20 JNI library, and packaged-asset WebView viewport.
 - Keep the viewport on `WebViewAssetLoader`; do not enable broad file access, mixed content, external URL navigation, or a JavaScript-to-native bridge.
-- Provide a small placeholder asset and plainly label demo-only native behavior.
+- Implement the supplied red/black dashboard direction with portrait and wide DeX-oriented layouts.
+- Add pure C++ primitive helpers for octet packing, rotation, page alignment, and CRC-32C with explicit limits.
+- Keep unsupported operations visibly labeled rather than faking success.
 
 Acceptance: Android Studio syncs and builds a debug ARM64 APK; host reports OS page size, marker control responds, and viewport loads the placeholder offline.
 
@@ -32,10 +34,11 @@ Acceptance: service starts/stops visibly and serves only the selected app's read
 
 ## Milestone 3 — Native primitives and measured memory policy
 
-- Implement independently testable pure C++ functions (page-size-aware alignment, octet bitfields, bounded SPSC queue only if needed) with host and Android tests.
+- Extend the Phase I helpers with unit/property tests and documented reference vectors.
+- Implement the Phase II iterative, doubling, Fibonacci, and routing engines only after formulas are converted to bounded inputs/outputs and their invariants are agreed.
 - Use OS-reported page size and checked arithmetic; never assume a device model maps to a page size or memory budget.
 - Treat buffers as demand-allocated, bounded app-private memory. Establish conservative caps from runtime memory class and user settings; react to memory pressure.
-- Add CRC/hash only with a documented format and test vectors. Use cryptographic hashes for archive integrity; checksum success is not authenticity.
+- Use CRC32-C only for accidental-corruption detection; use a cryptographic digest for archive content integrity, and signatures for authenticity.
 
 Acceptance: unit/property tests cover boundaries and overflow, instrumentation tests report actual runtime capabilities, and measured memory stays within documented caps on representative devices.
 

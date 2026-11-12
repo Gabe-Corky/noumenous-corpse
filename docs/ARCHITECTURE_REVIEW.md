@@ -11,6 +11,14 @@ The repository currently contains three interactive HTML simulators and a README
 3. Kotlin calls a tiny JNI library for a page-size query and a fixed demonstration state marker.
 4. SAF-based import, app-private staging, validation, and an optional loopback service are later milestones. A local server is not needed to render static content.
 
+## Architectural hierarchy from the specification
+
+- **Chiasmiarchal / Phase I:** foundational deterministic primitives. The starter now includes testable constexpr C++ helpers for the 5-bit/3-bit octet, byte rotations, page-boundary round-down, and software CRC-32C. These are isolated utilities, not the complete `libnoumenous_core.so` substrate.
+- **Archiasmiarchal / Phase II:** composition of iterative, doubling, Golden Ratio/Fibonacci, and state-routing engines. These require explicit input/output definitions, bounds, invariants, and reference tests before being connected to the UI or runtime.
+- **Omni-Archiasmiarchal / Phase III:** the application ecosystem: host UI, secure JNI mirror, viewport, import lifecycle, optional local bridge, storage format, and device-specific policy. The new host UI follows the supplied portrait/DeX layout direction while accurately labeling unimplemented operations.
+
+Treat `Phi > Delta` and the statistical gate as domain-specific design rules that need operational definitions and representative test vectors. Golden Ratio values and Fibonacci relations are mathematical primitives; by themselves they do not prove timing stability, hardware integrity, or system convergence.
+
 ## Corrections and constraints
 
 - **WebView is not a Vulkan/WebEngine wrapper.** Android WebView uses the platform Chromium renderer and GPU acceleration where supported; applications cannot force a Vulkan swapchain or bypass Android's rendering/security model.
@@ -22,7 +30,7 @@ The repository currently contains three interactive HTML simulators and a README
 - **The `0xC7` value is a state marker, not a checksum.** A NEON vector sum of repeated bytes is not a file integrity proof. CRC32 detects some accidental corruption but is not cryptographic; use a versioned archive format and cryptographic hashes for content integrity, and signatures/keys for authenticity.
 - **A 4095+1 layout does not itself provide atomic durable commits.** File-system write ordering, fsync/rename behavior, crash consistency, and a recovery protocol must be specified and tested.
 - **APK generation/signing should not be represented as an on-device feature by default.** Builds should occur in a controlled toolchain/CI; installed apps do not gain a trusted signing identity by bundling a private key. Never embed production signing secrets.
-- **16 KB compatibility requires verification, not arbitrary linker flags.** Check all native libraries and APK alignment with current Android/NDK tooling, including third-party libraries. A 64 KB max-page-size setting may increase file footprint and does not guarantee runtime compatibility by itself.
+- **16 KB compatibility requires verification, not arbitrary linker flags.** Check all native libraries and APK alignment with current Android tooling, including third-party libraries. A 64 KB max-page-size setting may increase file footprint and does not guarantee runtime compatibility by itself.
 - **Minimize permissions.** SAF is preferable to `MANAGE_EXTERNAL_STORAGE`; the starter does not request storage or network permissions.
 
 ## Immediate risks and mitigations
@@ -37,4 +45,4 @@ The repository currently contains three interactive HTML simulators and a README
 
 ## Scope of current foundation
 
-Implemented in the starter: Android project scaffolding, a Compose host, native page-size query, demo marker test, and local packaged HTML placeholder. Not implemented: repository import, local HTTP/WebSocket daemon, WebSocket IPC, VFS/NVRAM slabs, hardware self-healing, GPU/NPU dispatch, Zstandard capsules, APK builder, or telemetry. See `IMPLEMENTATION_PLAN.md` for sequenced acceptance criteria.
+Implemented in the starter: Android project scaffolding, a responsive Compose host inspired by the supplied portrait/DeX screens, native page-size query, constexpr C++ primitives, demo marker check, and local packaged HTML placeholder. Not implemented: repository import, local HTTP/WebSocket daemon, WebSocket IPC, VFS/NVRAM slabs, hardware self-healing, GPU/NPU dispatch, Zstandard capsules, APK builder, or telemetry. See `IMPLEMENTATION_PLAN.md` for sequenced acceptance criteria.
