@@ -1,10 +1,15 @@
 {
   "schema_version": 1,
+  "register_count": 256,
+  "register_width_bits": 8,
+  "apex_register_bits": 64,
   "baseline_state": 199,
+  "active_state": 255,
   "fractal_bits": 5,
   "node_bits": 3,
   "slab_count": 12,
   "slab_bytes": 67108864,
   "minimum_page_size_bytes": 4096,
+  "diatetra_route_mask": 255,
   "crc32c_test_vector": 3808858755
 }
