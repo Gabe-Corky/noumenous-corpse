@@ -17,6 +17,9 @@ data class NativeContractResult(
     val passedCount: Int
         get() = checks.count { it.second }
 
+    val summary: String
+        get() = "${passedCount}/${CHECK_NAMES.size} checks • page ${pageSizeBytes} B"
+
     companion object {
         private val CHECK_NAMES = listOf(
             "Rules version",
