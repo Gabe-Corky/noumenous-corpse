@@ -4,13 +4,6 @@
 
 The repository currently contains three interactive HTML simulators and a README. They describe a possible Android product but are not an Android application, C++ runtime, daemon, VFS, GPU/NPU dispatch layer, or package builder. The `android/` scaffold added alongside this review is deliberately a working foundation, not a claim that those systems exist.
 
-## Feasible first architecture
-
-1. Compose provides a small host utility and launches a separately managed WebView viewport.
-2. WebViewAssetLoader serves packaged static app assets using its app-assets HTTPS origin. JavaScript is enabled for frontend compatibility, but the starter has no JavaScript interface and no file/content access.
-3. Kotlin calls a tiny JNI library for a page-size query and a fixed demonstration state marker.
-4. SAF-based import, app-private staging, validation, and an optional loopback service are later milestones. A local server is not needed to render static content.
-
 ## Architectural hierarchy from the specification
 
 - **Chiasmiarchal / Phase I:** foundational deterministic primitives. The starter now includes testable constexpr C++ helpers for the 5-bit/3-bit octet, byte rotations, page-boundary round-down, and software CRC-32C. These are isolated utilities, not the complete `libnoumenous_core.so` substrate.
@@ -18,6 +11,13 @@ The repository currently contains three interactive HTML simulators and a README
 - **Omni-Archiasmiarchal / Phase III:** the application ecosystem: host UI, secure JNI mirror, viewport, import lifecycle, optional local bridge, storage format, and device-specific policy. The new host UI follows the supplied portrait/DeX layout direction while accurately labeling unimplemented operations.
 
 Treat `Phi > Delta` and the statistical gate as domain-specific design rules that need operational definitions and representative test vectors. Golden Ratio values and Fibonacci relations are mathematical primitives; by themselves they do not prove timing stability, hardware integrity, or system convergence.
+
+## Feasible first architecture
+
+1. Compose provides a small host utility and launches a separately managed WebView viewport.
+2. WebViewAssetLoader serves packaged static app assets using its app-assets HTTPS origin. JavaScript is enabled for frontend compatibility, but the starter has no JavaScript interface and no file/content access.
+3. Kotlin calls a tiny JNI library for a page-size query and a fixed demonstration state marker.
+4. SAF-based import, app-private staging, validation, and an optional loopback service are later milestones. A local server is not needed to render static content.
 
 ## Corrections and constraints
 

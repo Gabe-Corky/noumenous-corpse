@@ -7,8 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CutCornerShape
@@ -35,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
 private fun ConverterHostScreen(onLaunch: () -> Unit) {
     var selectedAction by remember { mutableStateOf("READY") }
     val pageSize = remember { NativeSubstrate.pageSizeBytes() }
-    val wideLayout = androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp >= 720
+    val wideLayout = LocalConfiguration.current.screenWidthDp >= 720
 
     Surface(modifier = Modifier.fillMaxSize(), color = Void) {
         Column(modifier = Modifier.fillMaxSize().padding(12.dp)) {
@@ -151,7 +151,6 @@ private fun RepositoryPanel(
         OutlineAction("MOUNT LOCAL (.ZIP / DIR)", onAction)
         Spacer(Modifier.height(7.dp))
         OutlineAction("CLONE GIT REPOSITORY", onAction)
-        Spacer(Modifier.weight(1f, fill = false))
         Text("Imports are not enabled in this starter.", color = Muted, style = MaterialTheme.typography.labelSmall)
     }
 }
@@ -275,18 +274,19 @@ private fun MemoryTier(tier: String, capacity: String, detail: String) {
 private fun SectionPanel(
     title: String,
     modifier: Modifier = Modifier,
-    content: @Composable Column.() -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
             .border(1.dp, Crimson.copy(alpha = 0.55f), CutCornerShape(10.dp))
             .background(Panel, CutCornerShape(10.dp))
             .padding(12.dp),
-    ) {
-        Text("/ $title ///", color = Crimson, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
-        Spacer(Modifier.height(8.dp))
-        content()
-    }
+        content = {
+            Text("/ $title ///", color = Crimson, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
+            Spacer(Modifier.height(8.dp))
+            content()
+        },
+    )
 }
 
 @Composable
