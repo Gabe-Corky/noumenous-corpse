@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Chosen Palette: Crimson Substrate Light (Slate 50 background, High-Contrast Slate/Crimson UI Cards, Emerald/Ruby Telemetry Lights) -->
+    <!-- Application Structure Plan: Designed as a multi-section interactive workstation control center. It synthesizes the CORPSE architecture, 10 mathematical algorithms, multi-generational silicon memory tiers (S10 to S27), VFS slab topology, DiaTetra 8-Way IPC routing matrix, NEON 64-bit Apex Register self-healing simulator, and Android Studio project structure into an intuitive, explorable single-page dashboard. Users can interactively calculate bitwise primitives, trigger synthetic anomaly drift, audit NEON vector registers, dynamically switch hardware tiers, and simulate .corpse.zst vault packing. -->
+    <!-- Visualization & Content Choices: Replaced static documentation with interactive bitwise state calculators, Chart.js dynamic memory allocation graphs, live 12-slab VFS map, NEON vector audit simulator, and step-by-step IPC routing state machine. All visualizations comply with strict NO-SVG and NO-MERMAID constraints, utilizing HTML5 Canvas, Tailwind CSS layout containers, and Unicode indicators. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Noumenous: CORPSE Substrate Architecture Explorer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        /* Custom smooth scroll bar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-slate-900 text-white border-b-4 border-red-600 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl text-red-500 font-bold">◈</span>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-wider text-slate-100 flex items-center gap-2">
+                        PROJECT NOUMENOUS <span class="bg-red-700 text-white text-xs px-2 py-0.5 rounded font-mono">CORPSE v1.0</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-mono">Cyber-Organic Recursive-Refractive Repairing Physical-Systems Engineering</p>
+                </div>
+            </div>
+            <!-- Global Nav Controls -->
+            <nav class="flex flex-wrap gap-1 text-xs font-semibold">
+                <button onclick="scrollToSection('sec-overview')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition">⚙ Overview</button>
+                <button onclick="scrollToSection('sec-silicon')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition">⚡ Memory Topology</button>
+                <button onclick="scrollToSection('sec-primitives')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition">🧠 Algorithms (1-10)</button>
+                <button onclick="scrollToSection('sec-telemetry')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition">📊 Live NEON Audit</button>
+                <button onclick="scrollToSection('sec-diatetra')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition">🔀 DiaTetra IPC</button>
+                <button onclick="scrollToSection('sec-android')" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 transition">📦 Android Blueprint</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow space-y-8">
+
+        <!-- SECTION 1: ARCHITECTURE OVERVIEW & HUD PANELS -->
+        <section id="sec-overview" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="border-b border-slate-200 pb-4 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                        <span>⚙</span> Desktop-in-APK Architecture & Substrate Bridge
+                    </h2>
+                    <p class="text-sm text-slate-600 mt-1">
+                        High-performance zero-latency local bridge decoupling unmodified desktop frontends from remote cloud dependencies via embedded C++20 daemons on <span class="font-mono bg-slate-100 px-1 rounded text-red-600">127.0.0.1</span>.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                        ● Local Daemon Active
+                    </span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 font-mono">
+                        0xC7 Baseline
+                    </span>
+                </div>
+            </div>
+
+            <!-- Architecture Diagram Grid (HTML/Tailwind Styled - NO SVG) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-center">
+                <div class="bg-slate-50 border-2 border-slate-300 rounded-lg p-5 hover:border-red-500 transition shadow-sm">
+                    <div class="text-3xl mb-2">💻</div>
+                    <h3 class="font-bold text-slate-900 text-base">DESKTOP UI</h3>
+                    <p class="text-xs text-slate-500 mt-1">100% UI Parity • Vulkan/WebEngine</p>
+                    <div class="mt-3 text-xs bg-white border border-slate-200 p-2 rounded text-slate-700 font-mono">
+                        Unmodified HTML / JS / WASM Repositories
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-white border-2 border-red-600 rounded-lg p-5 shadow-sm flex flex-col justify-between">
+                    <div class="text-3xl text-red-400">⚙</div>
+                    <div>
+                        <h3 class="font-bold text-red-400 text-base font-mono">LOCAL BRIDGE</h3>
+                        <p class="text-xs text-slate-400 mt-1">127.0.0.1 Daemon • Loopback Socket</p>
+                    </div>
+                    <div class="mt-3 text-xs bg-slate-800 text-slate-200 p-2 rounded font-mono border border-slate-700">
+                        Zero-Latency Unix Domain & WS Streams
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border-2 border-slate-300 rounded-lg p-5 hover:border-red-500 transition shadow-sm">
+                    <div class="text-3xl mb-2">🧠</div>
+                    <h3 class="font-bold text-slate-900 text-base">CORPSE SUBSTRATE</h3>
+                    <p class="text-xs text-slate-500 mt-1">C++20 Bare-Metal • NEON v0.8b</p>
+                    <div class="mt-3 text-xs bg-white border border-slate-200 p-2 rounded text-slate-700 font-mono">
+                        64MB Memory Slabs • DiaTetra IPC
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Workstation Control Panel Slices (Mirroring User's UI Panels) -->
+            <h3 class="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
+                <span>🛠</span> Workstation Control HUD Actions
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                <button onclick="triggerHudAction('load')" class="bg-slate-900 hover:bg-slate-800 text-white p-4 rounded-lg border-b-4 border-red-600 flex flex-col items-center text-center transition group">
+                    <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">📦</span>
+                    <span class="text-xs font-bold font-mono">LOAD REPOSITORY</span>
+                    <span class="text-[10px] text-red-400 font-mono mt-1">>>></span>
+                </button>
+
+                <button onclick="triggerHudAction('verify')" class="bg-slate-900 hover:bg-slate-800 text-white p-4 rounded-lg border-b-4 border-red-600 flex flex-col items-center text-center transition group">
+                    <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">🛡️</span>
+                    <span class="text-xs font-bold font-mono">VERIFY INTEGRITY</span>
+                    <span class="text-[10px] text-red-400 font-mono mt-1">>>></span>
+                </button>
+
+                <button onclick="triggerHudAction('launch')" class="bg-slate-900 hover:bg-slate-800 text-white p-4 rounded-lg border-b-4 border-red-600 flex flex-col items-center text-center transition group">
+                    <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">▶</span>
+                    <span class="text-xs font-bold font-mono">LAUNCH WORKSPACE</span>
+                    <span class="text-[10px] text-red-400 font-mono mt-1">>>></span>
+                </button>
+
+                <button onclick="triggerHudAction('backup')" class="bg-slate-900 hover:bg-slate-800 text-white p-4 rounded-lg border-b-4 border-red-600 flex flex-col items-center text-center transition group">
+                    <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">⟳</span>
+                    <span class="text-xs font-bold font-mono">BACKUP & PACKAGE</span>
+                    <span class="text-[10px] text-red-400 font-mono mt-1">>>></span>
+                </button>
+
+                <button onclick="triggerHudAction('manage')" class="bg-slate-900 hover:bg-slate-800 text-white p-4 rounded-lg border-b-4 border-red-600 flex flex-col items-center text-center transition group">
+                    <span class="text-2xl mb-1 group-hover:scale-110 transition-transform">⚙</span>
+                    <span class="text-xs font-bold font-mono">MANAGE SUBSTRATE</span>
+                    <span class="text-[10px] text-red-400 font-mono mt-1">>>></span>
+                </button>
+            </div>
+
+            <!-- HUD Action Response Log -->
+            <div id="hud-console" class="mt-4 bg-slate-950 text-emerald-400 font-mono text-xs p-3 rounded-lg border border-slate-800">
+                [SYSTEM]: CORPSE Substrate initialized. Select a HUD action above to send JNI commands to 127.0.0.1 C++ daemon.
+            </div>
+        </section>
+
+        <!-- SECTION 2: SILICON GENERATIONS & MEMORY TOPOLOGY -->
+        <section id="sec-silicon" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <span>⚡</span> Silicon Evolution & VFS Memory Topology
+                </h2>
+                <p class="text-sm text-slate-600 mt-1">
+                    Multi-generational scaling from legacy ARMv8 (Galaxy S10) up to next-gen ARMv9.2+ (Galaxy S27 / Tab S13). Dynamic memory management pairs fixed <span class="font-semibold text-slate-800">768 MB VFS-NVRAM</span> slabs with scalable <span class="font-semibold text-slate-800">VFS Buffer Cache</span>.
+                </p>
+            </div>
+
+            <!-- Tier Selector Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6">
+                <button id="btn-tier-1" onclick="selectTier(1)" class="tier-tab bg-red-700 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm">
+                    <span>📱 Tier 1: Legacy (S10/Tab S6)</span>
+                </button>
+                <button id="btn-tier-2" onclick="selectTier(2)" class="tier-tab bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition">
+                    <span>📱 Tier 2: Intermediate (S21-S24)</span>
+                </button>
+                <button id="btn-tier-3" onclick="selectTier(3)" class="tier-tab bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition">
+                    <span>🚀 Tier 3: Next-Gen (S25-S27/Tab S13)</span>
+                </button>
+            </div>
+
+            <!-- Tier Spec Matrix & Visualization Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+                <!-- Left Column: Dynamic Spec Card -->
+                <div class="lg:col-span-5 bg-slate-50 border border-slate-200 rounded-lg p-5">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
+                        <h3 id="tier-title" class="font-bold text-slate-900 text-base">Tier 1: ARMv8-A Baseline</h3>
+                        <span id="tier-badge" class="bg-slate-900 text-white text-[10px] font-mono px-2 py-0.5 rounded">4KB PAGES</span>
+                    </div>
+
+                    <dl class="space-y-2 text-xs">
+                        <div class="flex justify-between py-1 border-b border-slate-200">
+                            <dt class="text-slate-500">Representative Devices:</dt>
+                            <dd id="tier-devices" class="font-semibold text-slate-800 text-right">Galaxy S10, Note 10, Tab S6</dd>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-200">
+                            <dt class="text-slate-500">Silicon / SoCs:</dt>
+                            <dd id="tier-silicon" class="font-semibold text-slate-800 text-right">Snapdragon 855 / Exynos 9820</dd>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-200">
+                            <dt class="text-slate-500">Paging Architecture:</dt>
+                            <dd id="tier-paging" class="font-semibold text-slate-800 text-right">Standard 4KB Single Pages</dd>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-200">
+                            <dt class="text-slate-500">FEAT_LSE Atomic Support:</dt>
+                            <dd id="tier-lse" class="font-semibold text-slate-800 text-right">Pre-FEAT_LSE / Software Fallback</dd>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-200">
+                            <dt class="text-slate-500">Fixed VFS-NVRAM Footprint:</dt>
+                            <dd class="font-mono font-bold text-red-600">768 MB (12 × 64MB Slabs)</dd>
+                        </div>
+                        <div class="flex justify-between py-1 border-b border-slate-200">
+                            <dt class="text-slate-500">Scalable VFS Buffer Cache:</dt>
+                            <dd id="tier-cache" class="font-mono font-bold text-slate-800">512 MB</dd>
+                        </div>
+                        <div class="flex justify-between py-1 pt-2 font-bold text-sm bg-red-50 px-2 rounded">
+                            <dt class="text-red-900">Total Substrate Topology:</dt>
+                            <dd id="tier-total" class="font-mono text-red-700">1.25 GB</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <!-- Right Column: Chart.js Memory Allocation Chart -->
+                <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 class="text-sm font-bold text-slate-800 mb-2 flex items-center justify-between">
+                        <span>📊 Memory Topology Allocation Comparison (GB)</span>
+                        <span class="text-xs text-slate-500 font-normal">Fixed vs Scalable</span>
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="chart-topology"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12 x 64MB VFS-NVRAM Slab Topology Map -->
+            <div class="mt-8 border-t border-slate-200 pt-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span>◈</span> 12 Omni-Directional 64 MB VFS-NVRAM Slabs (768 MB Total Topology)
+                    </h3>
+                    <span class="text-xs text-slate-500 font-mono">64 MB Base Slab Constant (67,108,864 Bytes)</span>
+                </div>
+                <p class="text-xs text-slate-600 mb-4">
+                    Each slab is anchored to an invariant 64 MB memory-mapped boundary (`memfd_create`). Click any slab to inspect its hardware routing assignment and buffer specs.
+                </p>
+
+                <!-- Interactive Slab Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                    <button onclick="inspectSlab(0)" class="slab-btn border-2 border-red-500 bg-red-50 p-3 rounded text-left hover:bg-red-100 transition">
+                        <div class="text-[10px] font-mono text-red-600 font-bold">SLAB 0x00</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">VFS Storage In</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">64 MB Slab</div>
+                    </button>
+
+                    <button onclick="inspectSlab(1)" class="slab-btn border-2 border-red-500 bg-red-50 p-3 rounded text-left hover:bg-red-100 transition">
+                        <div class="text-[10px] font-mono text-red-600 font-bold">SLAB 0x01</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">VFS Storage Out</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">64 MB Slab</div>
+                    </button>
+
+                    <button onclick="inspectSlab(2)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x02</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 1</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">CPU ↔ GPU (0x01)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(3)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x03</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 2</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">CPU ↔ NPU (0x02)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(4)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x04</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 3</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">Broadcast (0x04)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(5)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x05</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 4</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">Split-Chan (0x08)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(6)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x06</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 5</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">GPU ↔ CPU (0x10)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(7)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x07</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 6</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">NPU ↔ CPU (0x20)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(8)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x08</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 7</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">Convergence (0x40)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(9)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x09</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">DiaTetra IPC 8</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">First-Ready (0x80)</div>
+                    </button>
+
+                    <button onclick="inspectSlab(10)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x0A</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">CPU NVRAM A</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">AST Tree Buffer</div>
+                    </button>
+
+                    <button onclick="inspectSlab(11)" class="slab-btn border-2 border-slate-300 bg-white p-3 rounded text-left hover:border-slate-400 transition">
+                        <div class="text-[10px] font-mono text-slate-500 font-bold">SLAB 0x0B</div>
+                        <div class="text-xs font-bold text-slate-900 truncate">CPU NVRAM B</div>
+                        <div class="text-[10px] text-slate-500 font-mono mt-1">64-Step History</div>
+                    </button>
+                </div>
+
+                <!-- Slab Details Console -->
+                <div id="slab-inspector" class="mt-4 bg-slate-900 text-slate-200 p-4 rounded-lg font-mono text-xs border border-slate-700 flex justify-between items-center">
+                    <div>
+                        <span class="text-red-400 font-bold">[INSPECTOR]:</span> Selected <span id="slab-name" class="text-white font-bold">SLAB 0x00 (VFS Storage In)</span>
+                    </div>
+                    <div class="text-slate-400 text-[11px]">
+                        Address Bound: <span id="slab-bound" class="text-emerald-400">0x00000000 - 0x03FFFFFF</span> (67,108,864 Bytes)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MATHEMATICAL ALGORITHMS & PRIMITIVES PLAYGROUND -->
+        <section id="sec-primitives" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <span>🧠</span> Mathematical Primitives & Algorithmic Breakdown (1 to 10)
+                </h2>
+                <p class="text-sm text-slate-600 mt-1">
+                    Complete breakdown of the 10 core mathematical engines driving zero-allocation timing, fractal state splitting, branchless routing, and ARM NEON hardware audits.
+                </p>
+            </div>
+
+            <!-- Algorithm Selection Tabs (1-10 Grid) -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6">
+                <button onclick="selectAlgo(1)" class="algo-tab bg-red-700 text-white p-2 rounded text-xs font-bold font-mono text-left">1. χραω_φ Octet</button>
+                <button onclick="selectAlgo(2)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">2. OSDB-8 Byte</button>
+                <button onclick="selectAlgo(3)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">3. Chiastic Octave</button>
+                <button onclick="selectAlgo(4)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">4. Omni-Archiasm</button>
+                <button onclick="selectAlgo(5)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">5. ΑΩ/ΩΑ_Φ Paging</button>
+                <button onclick="selectAlgo(6)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">6. DiaTetra Routing</button>
+                <button onclick="selectAlgo(7)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">7. Φ > Δ Repair Gate</button>
+                <button onclick="selectAlgo(8)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">8. Polymorphic Octet</button>
+                <button onclick="selectAlgo(9)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">9. 64-Bit Apex Register</button>
+                <button onclick="selectAlgo(10)" class="algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left">10. 4095+1 Geometry</button>
+            </div>
+
+            <!-- Algorithm Display & Interactive Bit Calculator Card -->
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                <!-- Algo Title Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-4 mb-4 gap-2">
+                    <div>
+                        <h3 id="algo-name" class="text-xl font-bold text-slate-900 font-mono">1. The Chiasmiarchal Recursive Octet (χραω_φ / xrao_t)</h3>
+                        <p id="algo-sign" class="text-xs text-red-600 font-mono mt-0.5">Identifying Sign: χραω_φ (xrao_t) • Primitive Byte</p>
+                    </div>
+                    <span id="algo-tag" class="bg-slate-900 text-white font-mono text-xs px-2.5 py-1 rounded">uint8_t Bit Partition</span>
+                </div>
+
+                <!-- Description & Details -->
+                <p id="algo-desc" class="text-sm text-slate-700 mb-6 leading-relaxed">
+                    Operates as the core, indivisible 8-bit primitive byte at the base of the pipeline, governing state progression, zero-allocation micro-burst timing, and bit-level invariant verification.
+                </p>
+
+                <!-- Interactive Live Bitwise Calculator Container -->
+                <div id="algo-calculator-container" class="bg-white border border-slate-300 rounded-lg p-5 shadow-inner">
+                    <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <span>🧮</span> Interactive Bitwise Field Calculator
+                    </h4>
+
+                    <!-- Dynamic Controls injected via JS -->
+                    <div id="calc-controls" class="space-y-4">
+                        <!-- Default: Primitive 1 Slider -->
+                    </div>
+
+                    <!-- Output Bit Map Display -->
+                    <div class="mt-6 pt-4 border-t border-slate-200">
+                        <div class="text-xs font-bold text-slate-600 mb-2">Bitfield Representation (8 Bits):</div>
+                        <div id="bit-boxes" class="grid grid-cols-8 gap-1 font-mono text-center text-xs font-bold">
+                            <!-- 8 bit boxes injected here -->
+                        </div>
+                        <div class="flex justify-between items-center mt-3 text-xs font-mono">
+                            <span class="text-slate-500">Decimal Value: <strong id="calc-dec" class="text-slate-900">199</strong></span>
+                            <span class="text-slate-500">Hex Representation: <strong id="calc-hex" class="text-red-600">0xC7</strong></span>
+                            <span class="text-slate-500">Status: <strong id="calc-status" class="text-emerald-600">BASELINE NOMINAL</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: LIVE TELEMETRY & HARDWARE SELF-HEALING SIMULATOR -->
+        <section id="sec-telemetry" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="border-b border-slate-200 pb-4 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                        <span>📊</span> Real-Time Telemetry & NEON Vector Audit Simulator
+                    </h2>
+                    <p class="text-sm text-slate-600 mt-1">
+                        Simulate single-cycle parallel audits across all 8 sub-octets using AArch64 NEON vector operations (`uint8x8_t` and `vaddv_u8`). Inject synthetic differential drift ($\Delta$) to test automatic baseline self-healing (`0xC7`).
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="sim-toggle-btn" onclick="toggleSimulation()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition">
+                        <span>▶ Start Simulation</span>
+                    </button>
+                    <button onclick="injectAnomaly()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition">
+                        <span>⚠️ Inject Anomaly Drift</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Simulation Visualizer Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- 64-Bit Apex Vector Matrix (8 x 8 Bits) -->
+                <div class="lg:col-span-6 bg-slate-900 text-white rounded-lg p-5 border border-slate-800">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                        <h3 class="text-xs font-bold font-mono text-red-400">64-BIT APEX REGISTER (uint64_t / NEON v0.8b)</h3>
+                        <span id="neon-sum" class="bg-slate-800 text-emerald-400 font-mono text-xs px-2 py-0.5 rounded">vaddv_u8 = 1592 (NOMINAL)</span>
+                    </div>
+
+                    <!-- 8 Sub-Octet Grid -->
+                    <div class="space-y-2 text-xs font-mono">
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 7 [CYBER - 0x80]:</span>
+                            <span id="oct-7" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 6 [ORGANIC - 0x40]:</span>
+                            <span id="oct-6" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 5 [RECURSIVE - 0x20]:</span>
+                            <span id="oct-5" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 4 [REFRACTIVE - 0x10]:</span>
+                            <span id="oct-4" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 3 [REPAIRING - 0x08]:</span>
+                            <span id="oct-3" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 2 [PHYSICAL - 0x04]:</span>
+                            <span id="oct-2" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 1 [SYSTEMS - 0x02]:</span>
+                            <span id="oct-1" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                            <span class="text-slate-400">Octet 0 [ENGINEERING - 0x01]:</span>
+                            <span id="oct-0" class="text-emerald-400 font-bold">0xC7 (199)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Drift & Repair Live Chart -->
+                <div class="lg:col-span-6 bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center justify-between">
+                        <span>📈 Golden Ratio Pacing (Φ) vs Accumulated Drift (Δ)</span>
+                        <span id="p-val-display" class="font-mono text-emerald-600 font-bold">p-value: 0.982</span>
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="chart-telemetry"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: DIATETRA 8-WAY IPC ROUTING & ZST CAPSULE BUILDER -->
+        <section id="sec-diatetra" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <span>🔀</span> DiaTetra 8-Way IPC Routing & Dual-Mode Capsule Builder
+                </h2>
+                <p class="text-sm text-slate-600 mt-1">
+                    Lock-free, zero-copy SPSC message passing across heterogeneous units (CPU, GPU, NPU) paired with Mode A APK building and Mode B <span class="font-mono text-red-600">.corpse.zst</span> vault archiving.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- DiaTetra Routing Mode Selector -->
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-5">
+                    <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                        <span>⚡</span> 8 Bi-Directional IPC Routing Modes (SPSC Ring Buffers)
+                    </h3>
+                    <div class="space-y-2 text-xs font-mono">
+                        <label class="flex items-center gap-3 p-2 bg-white border border-slate-200 rounded cursor-pointer hover:border-red-500">
+                            <input type="radio" name="ipc-mode" value="0x01" checked onclick="updateIpcRoute('0x01')" class="accent-red-600">
+                            <div>
+                                <span class="font-bold text-slate-900">0x01 / 0x10:</span> Unicast CPU ↔ GPU (Graphics Dispatch)
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-2 bg-white border border-slate-200 rounded cursor-pointer hover:border-red-500">
+                            <input type="radio" name="ipc-mode" value="0x02" onclick="updateIpcRoute('0x02')" class="accent-red-600">
+                            <div>
+                                <span class="font-bold text-slate-900">0x02 / 0x20:</span> Unicast CPU ↔ NPU (Neural Inference Stream)
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-2 bg-white border border-slate-200 rounded cursor-pointer hover:border-red-500">
+                            <input type="radio" name="ipc-mode" value="0x04" onclick="updateIpcRoute('0x04')" class="accent-red-600">
+                            <div>
+                                <span class="font-bold text-slate-900">0x04:</span> Simultaneous Broadcast (All Accelerators)
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-2 bg-white border border-slate-200 rounded cursor-pointer hover:border-red-500">
+                            <input type="radio" name="ipc-mode" value="0x08" onclick="updateIpcRoute('0x08')" class="accent-red-600">
+                            <div>
+                                <span class="font-bold text-slate-900">0x08:</span> Concurrent Split-Channel (Parallel Sub-Tasking)
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-2 bg-white border border-slate-200 rounded cursor-pointer hover:border-red-500">
+                            <input type="radio" name="ipc-mode" value="0x40" onclick="updateIpcRoute('0x40')" class="accent-red-600">
+                            <div>
+                                <span class="font-bold text-slate-900">0x40:</span> Simultaneous Convergence (State Sync)
+                            </div>
+                        </label>
+                        <label class="flex items-center gap-3 p-2 bg-white border border-slate-200 rounded cursor-pointer hover:border-red-500">
+                            <input type="radio" name="ipc-mode" value="0x80" onclick="updateIpcRoute('0x80')" class="accent-red-600">
+                            <div>
+                                <span class="font-bold text-slate-900">0x80:</span> Asynchronous First-Ready Return (Zero Wait)
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Active Route Display -->
+                    <div id="ipc-route-status" class="mt-4 p-3 bg-slate-900 text-emerald-400 font-mono text-xs rounded border border-slate-800">
+                        Active Route: 0x01 (CPU ↔ GPU) • Cache Line: alignas(64) Isolated
+                    </div>
+                </div>
+
+                <!-- Capsule Packaging Simulator (Mode A vs Mode B) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <span>📦</span> Dual-Mode Archive & Backup Engine
+                        </h3>
+                        <p class="text-xs text-slate-600 mb-4">
+                            Package active workspace assets into standalone APKs or compressed zero-rot Zstandard capsules. Every 4,096-byte page is stamped via the 4095+1 Geometry Gate.
+                        </p>
+
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded border border-slate-200">
+                                <h4 class="font-bold text-xs text-slate-900">Mode A: Self-Contained APK Builder</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Bundles C++ runtime + local server + assets into signed, 16KB-aligned APK output.</p>
+                                <button onclick="runPackager('APK')" class="mt-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded transition">
+                                    Build Mode A APK Package
+                                </button>
+                            </div>
+
+                            <div class="bg-white p-3 rounded border border-slate-200">
+                                <h4 class="font-bold text-xs text-slate-900">Mode B: .corpse.zst Vault Capsule</h4>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Combines multi-threaded Zstd dictionary compression with squashfs base layers.</p>
+                                <button onclick="runPackager('ZST')" class="mt-2 bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-3 py-1.5 rounded transition">
+                                    Export Mode B (.corpse.zst) Capsule
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="packager-log" class="mt-4 p-3 bg-slate-950 text-slate-300 font-mono text-xs rounded border border-slate-800">
+                        [PACKAGER]: Idle. Select a mode above to simulate zero-copy packaging.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: ANDROID STUDIO BLUEPRINT INSPECTOR -->
+        <section id="sec-android" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <span>📦</span> Android Studio Project Blueprint Inspector
+                </h2>
+                <p class="text-sm text-slate-600 mt-1">
+                    Inspect the bloat-free Android Studio project hierarchy, Jetpack Compose layouts, C++20 NDK build rules, and JNI bridges.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                <!-- Left Column: File Tree Selector -->
+                <div class="md:col-span-4 bg-slate-900 text-slate-200 rounded-lg p-4 font-mono text-xs space-y-1">
+                    <div class="text-red-400 font-bold mb-2">📁 corpse-converter/</div>
+                    <div onclick="showCode('gradle')" class="cursor-pointer hover:bg-slate-800 p-1.5 rounded text-emerald-400">├── app/build.gradle.kts</div>
+                    <div onclick="showCode('cmake')" class="cursor-pointer hover:bg-slate-800 p-1.5 rounded text-emerald-400">├── src/main/cpp/CMakeLists.txt</div>
+                    <div onclick="showCode('jni')" class="cursor-pointer hover:bg-slate-800 p-1.5 rounded text-emerald-400">├── .../CorpseSubstrateBridge.kt</div>
+                    <div onclick="showCode('ui')" class="cursor-pointer hover:bg-slate-800 p-1.5 rounded text-emerald-400">├── .../ui/ConverterHostScreen.kt</div>
+                    <div onclick="showCode('view')" class="cursor-pointer hover:bg-slate-800 p-1.5 rounded text-emerald-400">└── .../DesktopViewportActivity.kt</div>
+                </div>
+
+                <!-- Right Column: Code Snippet Viewer -->
+                <div class="md:col-span-8 bg-slate-950 text-slate-100 rounded-lg p-4 font-mono text-xs border border-slate-800 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-3">
+                            <span id="code-filename" class="text-red-400 font-bold">ConverterHostScreen.kt</span>
+                            <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Jetpack Compose UI</span>
+                        </div>
+                        <pre id="code-box" class="overflow-x-auto text-[11px] leading-relaxed text-slate-300">
+// Jetpack Compose Host Screen mapping your HUD images to local JNI bridges
+@Composable
+fun ConverterHostScreen() {
+    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
+        // 1. Header & Central Logo Slices
+        Image(painter = painterResource(R.drawable.corpse_header), contentDescription = null)
+        Image(painter = painterResource(R.drawable.noumenous_logo), contentDescription = null)
+        
+        // 2. 5 HUD Action Buttons connected to C++20 Daemon via @FastNative JNI
+        Row {
+            ImageButton(R.drawable.btn_load_repo) { CorpseSubstrateBridge.mountDesktopRepoToVfs("/assets") }
+            ImageButton(R.drawable.btn_verify) { CorpseSubstrateBridge.executeOctetVerification() }
+            ImageButton(R.drawable.btn_launch) { CorpseSubstrateBridge.startLocalDaemon(8080) }
+        }
+    }
+}
+                        </pre>
+                    </div>
+                    <div class="mt-4 pt-2 border-t border-slate-800 text-[10px] text-slate-500 flex justify-between">
+                        <span>Zero Telemetry • ARM64 Native</span>
+                        <span>MinSDK: 29 • TargetSDK: 35</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                <p class="font-bold text-slate-200">PROJECT NOUMENOUS: CORPSE CONVERTER</p>
+                <p class="text-[11px] text-slate-500">com.Noumenous.CORPSE.Converter • Local Mobile Desktop Workstation Substrate</p>
+            </div>
+            <div class="text-right font-mono text-[11px]">
+                <p class="text-emerald-400">⚡ Status: 0xC7 Baseline Validated</p>
+                <p class="text-slate-500">Infinite Potential. Local Control. Noumenous.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic & Chart Setup -->
+    <script>
+        // Global State Variables
+        let currentTier = 1;
+        let currentAlgo = 1;
+        let primitiveVal = 199; // 0xC7
+        let simRunning = false;
+        let simInterval = null;
+        let driftVal = 0.01;
+        let topologyChart = null;
+        let telemetryChart = null;
+        let telemetryData = { labels: [], drift: [], phi: [] };
+
+        // 10 Algorithms Content Storage
+        const algosData = {
+            1: {
+                name: "1. The Chiasmiarchal Recursive Octet (χραω_φ / xrao_t)",
+                sign: "Identifying Sign: χραω_φ (xrao_t) • Primitive Byte",
+                tag: "uint8_t Bit Partition",
+                desc: "Operates as the core, indivisible 8-bit primitive byte at the base of the pipeline, governing state progression, zero-allocation micro-burst timing, and bit-level invariant verification. Bits [7:3] execute recursive depth (0..31), while Bits [2:0] isolate structural boundaries (0..7).",
+                type: "p1"
+            },
+            2: {
+                name: "2. OSDB-8 (Octal-State Diagnostic Byte)",
+                sign: "Identifying Sign: OSDB-8 • Diagnostic Primitive",
+                tag: "Rotationary & Refactor",
+                desc: "Functions as a rotationary diagnostic primitive that compresses real-time telemetry across major architectural domains into a single byte without consuming CPU cycles. Bit 7 is the Fault Sentinel, Bits [6:4] form the Node Selector, and Bits [3:0] track INT4 load gradient steps.",
+                type: "p2"
+            },
+            3: {
+                name: "3. The Chiastic Octave Engine",
+                sign: "Identifying Sign: Loci (a, b, a', ɓ, a° ↔ A, B, A', Ɓ, A°)",
+                tag: "Branchless Routing",
+                desc: "Provides deterministic, branchless routing for non-linear state transitions across the system mesh by combining χραω_φ with linear state recurrence (x_n = f(x_{n-1}, n)) and binary geometric scaling (x_n = x_0 · 2^n).",
+                type: "generic"
+            },
+            4: {
+                name: "4. The Omni-Archiasmiarchal Umbrella",
+                sign: "Identifying Sign: ΑΩ ⟶ ΩΑ = Φ > Δ",
+                tag: "Macro Fibonacci Engine",
+                desc: "The complete macro-systemic engine wrapping The Chiastic Octave with asymptotic temporal pacing, harmonic division, and Fibonacci sequence progression (F_n = (Φ^n - (-Φ)^-n) / √5) to govern end-to-end execution cycles.",
+                type: "generic"
+            },
+            5: {
+                name: "5. The ΑΩ/ΩΑ_Φ Factor/Refactor Paging Engine",
+                sign: "Identifying Sign: ΑΩ/ΩΑ_Φ Paging",
+                tag: "Super-Page Bounds",
+                desc: "Governs memory scaling, byte alignment, and inter-core temporal pacing across multi-generational ARM silicon (S10 through S27) by pairing rational power-of-two anchors (4KB to 16KB) with irrational phase-shifting radicals (√2 ≈ 1.414, 2√2 ≈ 2.828).",
+                type: "generic"
+            },
+            6: {
+                name: "6. The DiaTetra (ICXC NIKA) 8-Way IPC Routing Engine",
+                sign: "Identifying Sign: DiaTetra ICXC NIKA",
+                tag: "SPSC Lock-Free Ring Buffer",
+                desc: "Manages lock-free, zero-copy cross-thread and cross-process message passing across CPU, GPU, and NPU accelerators using SPSC ring buffers isolated on 64-byte cache lines (alignas(64)). Index masking formula: (Head - Tail) & (N - 1).",
+                type: "generic"
+            },
+            7: {
+                name: "7. Φ > Δ Convergence & Repair Gate",
+                sign: "Identifying Sign: ΑΩ ⟶ ΩΑ = Φ > Δ",
+                tag: "Self-Healing Core",
+                desc: "Acts as the real-time self-stabilization and perimeter integrity gate. Golden Ratio temporal pacing Φ strictly dominates and suppresses accumulated differential drift Δ. If Gaussian p-value < 0.05, an atomic repair cycle triggers, restoring baseline 0xC7.",
+                type: "generic"
+            },
+            8: {
+                name: "8. CORPSE Chiasmiarchitectural Polymorphic Octet",
+                sign: "Identifying Sign: CORPSE Octet (0x80 to 0x01)",
+                tag: "Hardware State Register",
+                desc: "The 8-bit hardware register mapping directly to Cyber (0x80), Organic (0x40), Recursive (0x20), Refractive (0x10), Repairing (0x08), Physical (0x04), Systems (0x02), and Engineering (0x01). Canonical baseline state is 0xC7; full active convergence is 0xFF.",
+                type: "generic"
+            },
+            9: {
+                name: "9. 64-Bit CORPSE Omni-Fractal Apex Register",
+                sign: "Identifying Sign: Apex Register (uint64_t / NEON v0.8b)",
+                tag: "Single-Cycle Vector Audit",
+                desc: "Expands the polymorphic octet into an 8 x 8 = 64-bit matrix where each macro domain governs its own 8-bit sub-octet. Executes single-cycle parallel audits via AArch64 NEON vector registers (uint8x8_t and vaddv_u8), automatically restoring 0xC7 via FEAT_LSE atomic instructions.",
+                type: "generic"
+            },
+            10: {
+                name: "10. 4095 + 1 Byte Geometry Gate (ChifractalBlock)",
+                sign: "Identifying Sign: 4095+1 Gate (ChifractalBlock)",
+                tag: "Zero-Trust Storage Boundary",
+                desc: "The zero-trust storage verification gate protecting local partition commits (/storage/emulated/0/). Every 4,096-byte page consists of 4,095 bytes of verified payload and 1 atomic status byte (phi_value_status_bit at index 4095) holding the active state byte.",
+                type: "generic"
+            }
+        };
+
+        // Initialize Charts and Events on DOM Load
+        window.addEventListener('DOMContentLoaded', () => {
+            initTopologyChart();
+            initTelemetryChart();
+            updateBitCalculator();
+        });
+
+        // Navigation Scroll Helper
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // HUD Action Logger
+        function triggerHudAction(action) {
+            const consoleEl = document.getElementById('hud-console');
+            const now = new Date().toLocaleTimeString();
+            let msg = "";
+            if (action === 'load') msg = `[${now}] JNI: mountDesktopRepoToVfs("/assets/desktop_repo") -> 64MB Slab Mounted.`;
+            if (action === 'verify') msg = `[${now}] JNI: executeOctetVerification() -> NEON Checksum Passed. Baseline 0xC7 VALIDATED.`;
+            if (action === 'launch') msg = `[${now}] JNI: startLocalDaemon(8080) -> WebEngine Bridge Active at http://127.0.0.1:8080.`;
+            if (action === 'backup') msg = `[${now}] JNI: packageZstVault("/storage/emulated/0/vault.corpse.zst") -> 4095+1 Stamped.`;
+            if (action === 'manage') msg = `[${now}] JNI: getSubstrateTelemetry() -> Topology 768MB VFS-NVRAM + 1792MB Cache nominal.`;
+            consoleEl.innerText = msg;
+        }
+
+        // Tier Switcher
+        function selectTier(tier) {
+            currentTier = tier;
+            document.querySelectorAll('.tier-tab').forEach((b, i) => {
+                if (i + 1 === tier) {
+                    b.className = "tier-tab bg-red-700 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-sm";
+                } else {
+                    b.className = "tier-tab bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition";
+                }
+            });
+
+            const title = document.getElementById('tier-title');
+            const badge = document.getElementById('tier-badge');
+            const devices = document.getElementById('tier-devices');
+            const silicon = document.getElementById('tier-silicon');
+            const paging = document.getElementById('tier-paging');
+            const lse = document.getElementById('tier-lse');
+            const cache = document.getElementById('tier-cache');
+            const total = document.getElementById('tier-total');
+
+            if (tier === 1) {
+                title.innerText = "Tier 1: ARMv8-A Baseline";
+                badge.innerText = "4KB PAGES";
+                devices.innerText = "Galaxy S10, Note 10, Tab S6";
+                silicon.innerText = "Snapdragon 855 / Exynos 9820";
+                paging.innerText = "Standard 4KB Single Pages";
+                lse.innerText = "Pre-FEAT_LSE / Software Fallback";
+                cache.innerText = "512 MB";
+                total.innerText = "1.25 GB";
+            } else if (tier === 2) {
+                title.innerText = "Tier 2: ARMv8.2 / v9.0 Intermediate";
+                badge.innerText = "4KB × 4 SUPER-PAGES";
+                devices.innerText = "Galaxy S21-S24, Fold 5, Tab S8/S9";
+                silicon.innerText = "Snapdragon 8 Gen 1-3 / Exynos 2400";
+                paging.innerText = "4KB × 4 Virtual Super-Paging";
+                lse.innerText = "Native FEAT_LSE (ldsetab)";
+                cache.innerText = "1,792 MB";
+                total.innerText = "2.50 GB";
+            } else if (tier === 3) {
+                title.innerText = "Tier 3: ARMv9.2+ Next-Gen Horizon";
+                badge.innerText = "NATIVE 16KB SUPER-PAGES";
+                devices.innerText = "Galaxy S25U, S26, S27, Tab S10-S13";
+                silicon.innerText = "Snapdragon 8 Elite / Dimensity / Exynos 2500";
+                paging.innerText = "Native 16KB Hardware Page Support";
+                lse.innerText = "FEAT_LSE2 + Hardware NPU Acceleration";
+                cache.innerText = "2,816 MB";
+                total.innerText = "3.50 GB";
+            }
+
+            updateTopologyChart(tier);
+        }
+
+        // Slab Inspector
+        function inspectSlab(idx) {
+            const slabNames = [
+                "SLAB 0x00 (VFS Storage In)", "SLAB 0x01 (VFS Storage Out)",
+                "SLAB 0x02 (DiaTetra IPC 1: CPU↔GPU)", "SLAB 0x03 (DiaTetra IPC 2: CPU↔NPU)",
+                "SLAB 0x04 (DiaTetra IPC 3: Broadcast)", "SLAB 0x05 (DiaTetra IPC 4: Split-Chan)",
+                "SLAB 0x06 (DiaTetra IPC 5: GPU↔CPU)", "SLAB 0x07 (DiaTetra IPC 6: NPU↔CPU)",
+                "SLAB 0x08 (DiaTetra IPC 7: Convergence)", "SLAB 0x09 (DiaTetra IPC 8: First-Ready)",
+                "SLAB 0x0A (CPU NVRAM A: AST Tree)", "SLAB 0x0B (CPU NVRAM B: 64-Step History)"
+            ];
+
+            const nameEl = document.getElementById('slab-name');
+            const boundEl = document.getElementById('slab-bound');
+            nameEl.innerText = slabNames[idx];
+            const startAddr = (idx * 67108864).toString(16).toUpperCase().padStart(8, '0');
+            const endAddr = ((idx + 1) * 67108864 - 1).toString(16).toUpperCase().padStart(8, '0');
+            boundEl.innerText = `0x${startAddr} - 0x${endAddr}`;
+        }
+
+        // Algorithm Switcher
+        function selectAlgo(num) {
+            currentAlgo = num;
+            document.querySelectorAll('.algo-tab').forEach((b, i) => {
+                if (i + 1 === num) {
+                    b.className = "algo-tab bg-red-700 text-white p-2 rounded text-xs font-bold font-mono text-left";
+                } else {
+                    b.className = "algo-tab bg-slate-200 text-slate-700 hover:bg-slate-300 p-2 rounded text-xs font-bold font-mono text-left";
+                }
+            });
+
+            const data = algosData[num];
+            document.getElementById('algo-name').innerText = data.name;
+            document.getElementById('algo-sign').innerText = data.sign;
+            document.getElementById('algo-tag').innerText = data.tag;
+            document.getElementById('algo-desc').innerText = data.desc;
+
+            renderCalcControls(data.type);
+        }
+
+        // Calculator Controls Generator
+        function renderCalcControls(type) {
+            const container = document.getElementById('calc-controls');
+            if (type === 'p1') {
+                container.innerHTML = `
+                    <div>
+                        <div class="flex justify-between text-xs font-mono text-slate-600 mb-1">
+                            <span>Adjust Byte Value (0x00 to 0xFF):</span>
+                            <span id="slider-val-label" class="font-bold text-red-600">199 (0xC7)</span>
+                        </div>
+                        <input type="range" min="0" max="255" value="${primitiveVal}" oninput="onPrimitiveSlider(this.value)" class="w-full accent-red-600 cursor-pointer">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-xs font-mono pt-2">
+                        <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                            <span class="text-slate-500 block">Bits [7:3] (Mask 0xF8):</span>
+                            <span id="field-fractal" class="text-base font-bold text-slate-900">24 (Depth Lookup)</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                            <span class="text-slate-500 block">Bits [2:0] (Mask 0x07):</span>
+                            <span id="field-node" class="text-base font-bold text-slate-900">7 (Boundary Node)</span>
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'p2') {
+                container.innerHTML = `
+                    <div class="space-y-3 text-xs font-mono">
+                        <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded border border-slate-200">
+                            <span>Bit 7: Fault / Sentinel Flag</span>
+                            <input type="checkbox" id="osdb-fault" onchange="updateOsdbVal()" class="accent-red-600 w-4 h-4">
+                        </div>
+                        <div class="flex items-center justify-between bg-slate-50 p-2.5 rounded border border-slate-200">
+                            <span>Bits [6:4]: Node Selector</span>
+                            <select id="osdb-node" onchange="updateOsdbVal()" class="bg-white border border-slate-300 rounded px-2 py-1 text-slate-800">
+                                <option value="0">Core Engine (0x00)</option>
+                                <option value="1">Memory/MMAP (0x10)</option>
+                                <option value="2">IPC Channel (0x20)</option>
+                                <option value="3">JNI Bridge (0x30)</option>
+                                <option value="4">GPU/UI Render (0x40)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span class="text-slate-600 block mb-1">Bits [3:0]: INT4 A/D Load Scale (0-15):</span>
+                            <input type="range" min="0" max="15" value="7" id="osdb-scale" oninput="updateOsdbVal()" class="w-full accent-red-600 cursor-pointer">
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded text-xs text-slate-600 font-mono">
+                        Formula Engine Active: Interactive state progression locked to main primitive. Adjust primitive via Algo 1 or 2 to view downstream propagation.
+                    </div>
+                `;
+            }
+            updateBitCalculator();
+        }
+
+        function onPrimitiveSlider(val) {
+            primitiveVal = parseInt(val);
+            document.getElementById('slider-val-label').innerText = `${primitiveVal} (0x${primitiveVal.toString(16).toUpperCase().padStart(2, '0')})`;
+            updateBitCalculator();
+        }
+
+        function updateOsdbVal() {
+            const fault = document.getElementById('osdb-fault').checked ? 1 : 0;
+            const node = parseInt(document.getElementById('osdb-node').value);
+            const scale = parseInt(document.getElementById('osdb-scale').value);
+            primitiveVal = (fault << 7) | (node << 4) | (scale & 0x0F);
+            updateBitCalculator();
+        }
+
+        // Bitfield Renderer
+        function updateBitCalculator() {
+            const bitBoxes = document.getElementById('bit-boxes');
+            if (!bitBoxes) return;
+
+            let html = "";
+            for (let i = 7; i >= 0; i--) {
+                const bit = (primitiveVal >> i) & 1;
+                const color = bit ? "bg-red-600 text-white border-red-700" : "bg-slate-100 text-slate-400 border-slate-300";
+                html += `<div class="p-2 border rounded ${color}">${bit}</div>`;
+            }
+            bitBoxes.innerHTML = html;
+
+            document.getElementById('calc-dec').innerText = primitiveVal;
+            const hex = primitiveVal.toString(16).toUpperCase().padStart(2, '0');
+            document.getElementById('calc-hex').innerText = `0x${hex}`;
+
+            const statusEl = document.getElementById('calc-status');
+            if (primitiveVal === 199) { // 0xC7
+                statusEl.innerText = "0xC7 BASELINE NOMINAL";
+                statusEl.className = "text-emerald-600 font-bold";
+            } else if (primitiveVal === 255) { // 0xFF
+                statusEl.innerText = "0xFF FULL CONVERGENCE";
+                statusEl.className = "text-red-600 font-bold";
+            } else {
+                statusEl.innerText = "DYNAMIC PHASE STATE";
+                statusEl.className = "text-slate-600 font-bold";
+            }
+
+            // Update sub-fields if Primitive 1
+            const fractalEl = document.getElementById('field-fractal');
+            const nodeEl = document.getElementById('field-node');
+            if (fractalEl && nodeEl) {
+                fractalEl.innerText = `${(primitiveVal & 0xF8) >> 3} (Depth Lookup)`;
+                nodeEl.innerText = `${primitiveVal & 0x07} (Boundary Node)`;
+            }
+        }
+
+        // Chart.js - Memory Topology Chart
+        function initTopologyChart() {
+            const ctx = document.getElementById('chart-topology').getContext('2d');
+            topologyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Tier 1 (S10/Tab S6)', 'Tier 2 (S21-S24)', 'Tier 3 (S25-S27)'],
+                    datasets: [
+                        {
+                            label: 'Fixed VFS-NVRAM (GB)',
+                            data: [0.768, 0.768, 0.768],
+                            backgroundColor: '#b91c1c'
+                        },
+                        {
+                            label: 'Scalable VFS Cache (GB)',
+                            data: [0.512, 1.792, 2.816],
+                            backgroundColor: '#334155'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true, beginAtZero: true, max: 4.0 }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} GB`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTopologyChart(tier) {
+            if (!topologyChart) return;
+            // Highlight bar opacity
+            topologyChart.update();
+        }
+
+        // Chart.js - Real-Time Telemetry Chart
+        function initTelemetryChart() {
+            const ctx = document.getElementById('chart-telemetry').getContext('2d');
+            for (let i = 0; i < 20; i++) {
+                telemetryData.labels.push(i);
+                telemetryData.phi.push(1.618);
+                telemetryData.drift.push(1.618 - Math.random() * 0.05);
+            }
+
+            telemetryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: telemetryData.labels,
+                    datasets: [
+                        {
+                            label: 'Golden Ratio Baseline (Φ)',
+                            data: telemetryData.phi,
+                            borderColor: '#10b981',
+                            borderWidth: 2,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Accumulated Drift (Δ)',
+                            data: telemetryData.drift,
+                            borderColor: '#ef4444',
+                            borderWidth: 2,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { min: 1.0, max: 2.2 }
+                    }
+                }
+            });
+        }
+
+        // Telemetry Simulation Engine
+        function toggleSimulation() {
+            const btn = document.getElementById('sim-toggle-btn');
+            simRunning = !simRunning;
+            if (simRunning) {
+                btn.innerHTML = "<span>⏸ Pause Simulation</span>";
+                btn.className = "bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition";
+                simInterval = setInterval(updateSimulationStep, 600);
+            } else {
+                btn.innerHTML = "<span>▶ Start Simulation</span>";
+                btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition";
+                clearInterval(simInterval);
+            }
+        }
+
+        function injectAnomaly() {
+            driftVal = 0.45; // Induce major drift above alpha critical
+        }
+
+        function updateSimulationStep() {
+            const lastTick = telemetryData.labels[telemetryData.labels.length - 1] + 1;
+            telemetryData.labels.shift();
+            telemetryData.labels.push(lastTick);
+
+            telemetryData.phi.shift();
+            telemetryData.phi.push(1.618);
+
+            // Compute step drift
+            let currentDrift = 1.618 + (Math.random() - 0.5) * driftVal;
+            telemetryData.drift.shift();
+            telemetryData.drift.push(currentDrift);
+
+            // Calculate Gaussian p-value
+            const deltaDiff = Math.abs(currentDrift - 1.618);
+            const pVal = Math.max(0.001, 1.0 - deltaDiff * 2.5).toFixed(3);
+            const pValEl = document.getElementById('p-val-display');
+            pValEl.innerText = `p-value: ${pVal}`;
+
+            // Automatic Self-Healing Trigger (if p < 0.05)
+            const neonSumEl = document.getElementById('neon-sum');
+            if (pVal < 0.05) {
+                pValEl.className = "font-mono text-red-600 font-bold animate-pulse";
+                neonSumEl.innerText = "vaddv_u8 = DRIFT DETECTED -> HEALING...";
+                neonSumEl.className = "bg-red-900 text-white font-mono text-xs px-2 py-0.5 rounded";
+
+                // Auto reset octets to 0xC7
+                setTimeout(() => {
+                    driftVal = 0.01;
+                    for (let i = 0; i < 8; i++) {
+                        document.getElementById(`oct-${i}`).innerText = "0xC7 (199)";
+                        document.getElementById(`oct-${i}`).className = "text-emerald-400 font-bold";
+                    }
+                    neonSumEl.innerText = "vaddv_u8 = 1592 (NOMINAL RECOVERED)";
+                    neonSumEl.className = "bg-slate-800 text-emerald-400 font-mono text-xs px-2 py-0.5 rounded";
+                }, 400);
+            } else {
+                pValEl.className = "font-mono text-emerald-600 font-bold";
+                driftVal = Math.max(0.01, driftVal * 0.85); // Decay drift
+            }
+
+            telemetryChart.update();
+        }
+
+        // IPC Route Selector
+        function updateIpcRoute(hex) {
+            const statusEl = document.getElementById('ipc-route-status');
+            const modes = {
+                "0x01": "Unicast CPU ↔ GPU (Graphics Dispatch)",
+                "0x02": "Unicast CPU ↔ NPU (Neural Inference Stream)",
+                "0x04": "Simultaneous Broadcast (All Accelerators)",
+                "0x08": "Concurrent Split-Channel (Parallel Sub-Tasking)",
+                "0x40": "Simultaneous Convergence (State Sync)",
+                "0x80": "Asynchronous First-Ready Return (Zero Wait)"
+            };
+            statusEl.innerText = `Active Route: ${hex} (${modes[hex]}) • Cache Line: alignas(64) Isolated`;
+        }
+
+        // Capsule Packager Simulator
+        function runPackager(mode) {
+            const logEl = document.getElementById('packager-log');
+            const now = new Date().toLocaleTimeString();
+            if (mode === 'APK') {
+                logEl.innerText = `[${now}] MODE A APK: Compiling 16KB-aligned ELF binary... Stamping 4095+1 status byte... APK generated successfully.`;
+            } else {
+                logEl.innerText = `[${now}] MODE B ZST: Executing multi-threaded Zstd dictionary compression... Squashfs delta created. Output: vault.corpse.zst.`;
+            }
+        }
+
+        // Android Code Viewer Switcher
+        function showCode(key) {
+            const box = document.getElementById('code-box');
+            const title = document.getElementById('code-filename');
+
+            if (key === 'gradle') {
+                title.innerText = "build.gradle.kts";
+                box.innerText = `plugins {\n    id("com.android.application")\n    id("org.jetbrains.kotlin.android")\n}\n\nandroid {\n    namespace = "com.Noumenous.CORPSE.Converter"\n    compileSdk = 35\n    ndk { abiFilters.add("arm64-v8a") }\n    externalNativeBuild {\n        cmake { cppFlags += "-std=c++20 -O3 -ffast-math" }\n    }\n}`;
+            } else if (key === 'cmake') {
+                title.innerText = "CMakeLists.txt";
+                box.innerText = `cmake_minimum_required(VERSION 3.22.1)\nproject("corpse_converter_bridge")\nset(CMAKE_CXX_STANDARD 20)\n\n# 16KB/64KB Page Alignment for Android 15+\nset(CMAKE_SHARED_LINKER_FLAGS "\${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,max-page-size=65536 -Wl,-z,common-page-size=16384")\n\nadd_library(corpse_arch_core SHARED corpse_daemon_bridge.cpp libcorpse_arch_core.cpp)`;
+            } else if (key === 'jni') {
+                title.innerText = "CorpseSubstrateBridge.kt";
+                box.innerText = `package com.Noumenous.CORPSE.Converter\n\nobject CorpseSubstrateBridge {\n    init { System.loadLibrary("corpse_arch_core") }\n\n    @JvmStatic external fun mountDesktopRepoToVfs(assetPath: String): Boolean\n    @JvmStatic external fun executeOctetVerification(): Int\n    @JvmStatic external fun startLocalDaemon(port: Int): Boolean\n    @JvmStatic external fun packageZstVault(outputPath: String): Boolean\n    @JvmStatic external fun getSubstrateTelemetry(): String\n}`;
+            } else if (key === 'ui') {
+                title.innerText = "ConverterHostScreen.kt";
+                box.innerText = `@Composable\nfun ConverterHostScreen() {\n    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {\n        Image(painter = painterResource(R.drawable.corpse_header))\n        Row {\n            ImageButton(R.drawable.btn_load_repo) { CorpseSubstrateBridge.mountDesktopRepoToVfs("/assets") }\n            ImageButton(R.drawable.btn_verify) { CorpseSubstrateBridge.executeOctetVerification() }\n            ImageButton(R.drawable.btn_launch) { CorpseSubstrateBridge.startLocalDaemon(8080) }\n        }\n    }\n}`;
+            } else if (key === 'view') {
+                title.innerText = "DesktopViewportActivity.kt";
+                box.innerText = `class DesktopViewportActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        val webView = WebView(this).apply {\n            settings.javaScriptEnabled = true\n            settings.userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)..."\n            loadUrl("http://127.0.0.1:8080")\n        }\n        setContentView(webView)\n    }\n}`;
+            }
+        }
+    </script>
+</body>
+</html>

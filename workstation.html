@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORPSE // PROJECT NOUMENOUS - Mobile Desktop Workstation</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN for Memory Substrate Telemetry -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            void: '#050507',
+            panel: '#0d0e12',
+            panelDark: '#08080a',
+            panelLight: '#14161d',
+            crimson: '#ff1122',
+            crimsonGlow: 'rgba(255, 17, 34, 0.4)',
+            crimsonDark: '#80060e',
+            blood: '#b30010',
+            hairline: '#cc0015',
+            amberAlert: '#ff8800',
+            cyberCyan: '#00e5ff',
+            slateMuted: '#7f8899',
+            steelText: '#d8dee9',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Industrial Chamfer Polygonal Clips */
+    .chamfer-card {
+      clip-path: polygon(
+        12px 0, 
+        calc(100% - 12px) 0, 
+        100% 12px, 
+        100% calc(100% - 12px), 
+        calc(100% - 12px) 100%, 
+        12px 100%, 
+        0 calc(100% - 12px), 
+        0 12px
+      );
+    }
+    .chamfer-btn {
+      clip-path: polygon(
+        8px 0, 
+        calc(100% - 8px) 0, 
+        100% 8px, 
+        100% calc(100% - 8px), 
+        calc(100% - 8px) 100%, 
+        8px 100%, 
+        0 calc(100% - 8px), 
+        0 8px
+      );
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .chamfer-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 17, 34, 0.6), inset 0 0 10px rgba(255, 17, 34, 0.3);
+      transform: translateY(-1px);
+    }
+    .chamfer-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Brushed Metal Textured Backgrounds */
+    .brushed-metal {
+      background: radial-gradient(circle at 50% 0%, rgba(35, 18, 22, 0.4) 0%, rgba(13, 14, 18, 0.95) 70%),
+                  repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 255, 255, 0.015) 0px,
+                    rgba(255, 255, 255, 0.015) 1px,
+                    transparent 1px,
+                    transparent 2px
+                  ),
+                  linear-gradient(135deg, #13141a 0%, #0c0d11 50%, #171822 100%);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12),
+                  inset 0 -1px 2px rgba(0, 0, 0, 0.9),
+                  0 10px 25px rgba(0, 0, 0, 0.7);
+    }
+    .brushed-metal-slot {
+      background: linear-gradient(180deg, rgba(30, 8, 12, 0.85) 0%, rgba(13, 14, 18, 0.98) 100%),
+                  repeating-linear-gradient(
+                    45deg,
+                    rgba(255, 17, 34, 0.02) 0px,
+                    rgba(255, 17, 34, 0.02) 2px,
+                    transparent 2px,
+                    transparent 6px
+                  );
+    }
+
+    /* Hexagonal & Carbon Grid Background */
+    .carbon-hex-bg {
+      background-color: #050507;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(204, 0, 21, 0.08) 0%, transparent 60%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 28px 28px, 28px 28px;
+    }
+
+    /* Red Hairline Borders & Drop Glows */
+    .red-hairline {
+      border: 1px solid rgba(255, 17, 34, 0.65);
+      box-shadow: 0 0 12px rgba(255, 17, 34, 0.22), inset 0 0 8px rgba(255, 17, 34, 0.08);
+    }
+    .red-hairline-bright {
+      border: 1px solid #ff1122;
+      box-shadow: 0 0 18px rgba(255, 17, 34, 0.45), inset 0 0 12px rgba(255, 17, 34, 0.2);
+    }
+
+    /* Metallic Chrome Bevel Text */
+    .chrome-text {
+      background: linear-gradient(180deg, #ffffff 0%, #d4d8e2 35%, #7a8292 60%, #eef1f8 85%, #596173 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+    }
+
+    /* CRT Scanline Overlay */
+    .scanlines {
+      background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.35) 50%
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    /* Pulsing & Glowing Animations */
+    @keyframes redPulse {
+      0%, 100% { opacity: 0.85; filter: drop-shadow(0 0 8px rgba(255, 17, 34, 0.7)); }
+      50% { opacity: 1; filter: drop-shadow(0 0 20px rgba(255, 17, 34, 1)); }
+    }
+    .glow-pulse-red {
+      animation: redPulse 2.8s infinite ease-in-out;
+    }
+
+    /* Custom Scrollbar for Terminals */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #08080a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3a0d12;
+      border: 1px solid #ff1122;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff1122;
+    }
+  </style>
+</head>
+
+<body class="carbon-hex-bg text-steelText font-sans min-h-screen flex flex-col selection:bg-crimson selection:text-white overflow-x-hidden">
+  
+  <!-- CRT Scanline Vignette Overlay -->
+  <div class="fixed inset-0 scanlines z-40 pointer-events-none opacity-40"></div>
+
+  <!-- AUDIO TACTILE FEEDBACK ENGINE (Web Audio API Synthesizer) -->
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      muted: false,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      beep(freq = 880, type = 'sine', duration = 0.08, vol = 0.08) {
+        if (this.muted) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {
+          // Ignore audio initialization restrictions
+        }
+      },
+      click() { this.beep(1200, 'triangle', 0.04, 0.05); },
+      action() { this.beep(440, 'sawtooth', 0.12, 0.06); },
+      alert() { 
+        this.beep(880, 'square', 0.15, 0.1); 
+        setTimeout(() => this.beep(587, 'square', 0.18, 0.1), 160); 
+      },
+      heal() { 
+        this.beep(523.25, 'sine', 0.1, 0.08); 
+        setTimeout(() => this.beep(659.25, 'sine', 0.12, 0.08), 100); 
+        setTimeout(() => this.beep(783.99, 'sine', 0.2, 0.08), 220); 
+      }
+    };
+  </script>
+
+  <!-- ==================== HEADER BAR ==================== -->
+  <header class="relative z-30 w-full border-b border-crimsonDark bg-panelDark/95 backdrop-blur-md px-3 sm:px-6 py-2.5">
+    <div class="max-w-[1680px] mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      
+      <!-- Brand & Project Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-10 bg-crimson shadow-[0_0_12px_#ff1122]"></div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs font-mono font-bold tracking-widest text-crimson drop-shadow-[0_0_8px_rgba(255,17,34,0.8)]">// PROJECT NOUMENOUS</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-crimsonDark/40 border border-crimson/50 text-red-300">v4.8-RELEASE</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-zinc-400">ARM64-v8a</span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <h1 class="text-2xl sm:text-3xl font-black font-mono tracking-tighter chrome-text select-none">CORPSE</h1>
+            <span class="text-xs sm:text-sm font-semibold tracking-wide text-zinc-300 uppercase">Mobile Desktop Workstation Converter</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Maxims Stack -->
+      <div class="flex items-center justify-between lg:justify-end gap-3 sm:gap-6 pt-2 lg:pt-0 border-t lg:border-t-0 border-zinc-800/80">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 font-mono text-[10px] sm:text-xs">
+          <div class="bg-panel px-2.5 py-1 rounded border border-crimsonDark/50 flex flex-col">
+            <span class="text-zinc-500 uppercase tracking-wider text-[9px]">MAXIM 01</span>
+            <span class="text-red-400 font-bold flex items-center gap-1">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-crimson animate-ping"></span>
+              DESKTOP PARITY
+            </span>
+          </div>
+          <div class="bg-panel px-2.5 py-1 rounded border border-crimsonDark/50 flex flex-col">
+            <span class="text-zinc-500 uppercase tracking-wider text-[9px]">MAXIM 02</span>
+            <span class="text-emerald-400 font-bold">LOCAL BRIDGE</span>
+          </div>
+          <div class="bg-panel px-2.5 py-1 rounded border border-crimsonDark/50 flex flex-col">
+            <span class="text-zinc-500 uppercase tracking-wider text-[9px]">MAXIM 03</span>
+            <span class="text-cyan-400 font-bold">ZERO LATENCY</span>
+          </div>
+          <div class="bg-panel px-2.5 py-1 rounded border border-crimsonDark/50 flex flex-col">
+            <span class="text-zinc-500 uppercase tracking-wider text-[9px]">MAXIM 04</span>
+            <span class="text-amber-400 font-bold">FULL GPU</span>
+          </div>
+        </div>
+
+        <!-- Controls: Audio, Layout Mode, Clock -->
+        <div class="flex items-center gap-2 font-mono">
+          <button id="audioToggleBtn" onclick="toggleAudio()" title="Toggle Tactical Sounds" class="p-1.5 rounded bg-panel border border-zinc-700 hover:border-crimson text-zinc-300 text-xs transition">
+            <span id="audioIcon">🔊</span>
+          </button>
+          <div class="hidden md:flex flex-col text-right text-[10px] text-zinc-400 font-mono">
+            <span id="liveClock" class="text-white font-bold">00:00:00 UTC</span>
+            <span class="text-crimson">SUBSTRATE ONLINE</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== GOTHIC / CYBERPUNK CITYSCAPE BANNER ==================== -->
+  <section class="relative w-full overflow-hidden bg-gradient-to-b from-[#090a0d] via-[#10070a] to-void border-b border-crimsonDark/60 py-2 sm:py-3 px-4">
+    <!-- SVG City Skyline Silhouette with Blood Moon -->
+    <div class="absolute inset-0 opacity-30 pointer-events-none flex items-end justify-center">
+      <svg class="w-full h-24 sm:h-28 text-[#2b080f]" preserveAspectRatio="none" viewBox="0 0 1200 120" fill="currentColor">
+        <!-- Blood Moon -->
+        <circle cx="600" cy="28" r="22" fill="#ff1122" opacity="0.45" filter="drop-shadow(0 0 18px #ff1122)" />
+        <!-- Skyline Shapes -->
+        <path d="M0,120 L0,85 L30,85 L30,60 L45,60 L45,85 L70,85 L70,45 L85,30 L100,45 L100,85 L140,85 L140,70 L170,70 L170,95 L210,95 L210,35 L225,18 L240,35 L240,95 L280,95 L280,55 L310,55 L310,95 L360,95 L360,40 L380,40 L395,20 L410,40 L430,40 L430,95 L490,95 L490,65 L520,65 L520,95 L570,95 L580,25 L590,15 L600,8 L610,15 L620,25 L630,95 L680,95 L680,50 L710,50 L710,95 L760,95 L760,35 L775,18 L790,35 L790,95 L840,95 L840,65 L870,65 L870,95 L910,95 L910,45 L930,30 L950,45 L950,95 L990,95 L990,75 L1030,75 L1030,95 L1080,95 L1080,40 L1100,20 L1120,40 L1120,95 L1200,95 L1200,120 Z" />
+      </svg>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-2 z-10">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-crimson shadow-[0_0_8px_#ff1122]"></span>
+        <p class="text-xs sm:text-sm font-black font-mono tracking-widest text-white drop-shadow-[0_2px_8px_rgba(255,17,34,0.6)]">
+          INFINITE POTENTIAL. LOCAL CONTROL. NOUMENOUS.
+        </p>
+      </div>
+      <div class="text-[11px] font-mono text-zinc-400 flex items-center gap-3">
+        <span>VFS-NVRAM: <b class="text-crimson font-bold">768 MB SLAB</b></span>
+        <span class="hidden sm:inline text-zinc-600">|</span>
+        <span>NEON SIMD: <b class="text-emerald-400">0xC7 ATOMIC</b></span>
+        <span class="hidden sm:inline text-zinc-600">|</span>
+        <span>PORT: <b class="text-cyberCyan">127.0.0.1:8080</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
+  <main class="flex-1 max-w-[1720px] w-full mx-auto p-3 sm:p-5 flex flex-col gap-5 z-20">
+
+    <!-- TOP SECTION: TACTICAL HUD BUTTON BAR (5 ACTIONS + BLUEPRINTS) -->
+    <nav class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+      
+      <!-- 1. LOAD REPOSITORY -->
+      <button onclick="switchTab('repos')" id="tabBtn-repos" class="hud-tab-btn chamfer-btn brushed-metal red-hairline p-3 flex flex-col justify-between text-left group">
+        <div class="flex items-center justify-between w-full mb-1">
+          <span class="text-lg">📦</span>
+          <span class="text-[10px] font-mono text-crimson group-hover:translate-x-1 transition-transform">>>></span>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">SLOT 01</div>
+          <div class="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-red-300 tracking-tight">LOAD REPOSITORY</div>
+        </div>
+      </button>
+
+      <!-- 2. VERIFY INTEGRITY -->
+      <button onclick="switchTab('verify')" id="tabBtn-verify" class="hud-tab-btn chamfer-btn brushed-metal red-hairline p-3 flex flex-col justify-between text-left group">
+        <div class="flex items-center justify-between w-full mb-1">
+          <span class="text-lg">🛡️</span>
+          <span class="text-[10px] font-mono text-crimson group-hover:translate-x-1 transition-transform">>>></span>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">SLOT 02</div>
+          <div class="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-red-300 tracking-tight">VERIFY INTEGRITY</div>
+        </div>
+      </button>
+
+      <!-- 3. LAUNCH WORKSPACE -->
+      <button onclick="switchTab('workspace')" id="tabBtn-workspace" class="hud-tab-btn chamfer-btn brushed-metal red-hairline-bright p-3 flex flex-col justify-between text-left group bg-gradient-to-b from-[#22070a] to-[#0d0e12]">
+        <div class="flex items-center justify-between w-full mb-1">
+          <span class="text-lg text-crimson">▶</span>
+          <span class="text-[10px] font-mono text-crimson animate-pulse">ACTIVE >>></span>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono text-red-400 uppercase tracking-widest">LIVE PORT :8080</div>
+          <div class="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-red-300 tracking-tight">LAUNCH WORKSPACE</div>
+        </div>
+      </button>
+
+      <!-- 4. BACKUP & PACKAGE -->
+      <button onclick="switchTab('backup')" id="tabBtn-backup" class="hud-tab-btn chamfer-btn brushed-metal red-hairline p-3 flex flex-col justify-between text-left group">
+        <div class="flex items-center justify-between w-full mb-1">
+          <span class="text-lg">🔄</span>
+          <span class="text-[10px] font-mono text-crimson group-hover:translate-x-1 transition-transform">>>></span>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">SLOT 04</div>
+          <div class="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-red-300 tracking-tight">BACKUP & PACKAGE</div>
+        </div>
+      </button>
+
+      <!-- 5. MANAGE SUBSTRATE -->
+      <button onclick="switchTab('substrate')" id="tabBtn-substrate" class="hud-tab-btn chamfer-btn brushed-metal red-hairline p-3 flex flex-col justify-between text-left group">
+        <div class="flex items-center justify-between w-full mb-1">
+          <span class="text-lg">⚙️</span>
+          <span class="text-[10px] font-mono text-crimson group-hover:translate-x-1 transition-transform">>>></span>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">SLOT 05</div>
+          <div class="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-red-300 tracking-tight">MANAGE SUBSTRATE</div>
+        </div>
+      </button>
+
+      <!-- 6. BLUEPRINT INSPECTOR -->
+      <button onclick="switchTab('blueprint')" id="tabBtn-blueprint" class="hud-tab-btn chamfer-btn brushed-metal red-hairline p-3 flex flex-col justify-between text-left group">
+        <div class="flex items-center justify-between w-full mb-1">
+          <span class="text-lg">📜</span>
+          <span class="text-[10px] font-mono text-crimson group-hover:translate-x-1 transition-transform">>>></span>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">ARCHITECTURE</div>
+          <div class="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-red-300 tracking-tight">BLUEPRINT CODE</div>
+        </div>
+      </button>
+
+    </nav>
+
+    <!-- ==================== MEMORY TOPOLOGY METERS (LED-STYLE GAUGES) ==================== -->
+    <div class="chamfer-card brushed-metal red-hairline p-3 sm:p-4">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between pb-3 mb-3 border-b border-crimsonDark/40 gap-2">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 bg-crimson rounded-full animate-ping"></div>
+          <span class="font-mono text-xs font-bold tracking-widest text-zinc-200 uppercase">SUBSTRATE MEMORY TOPOLOGY ALLOCATION</span>
+        </div>
+        <div class="font-mono text-[11px] text-zinc-400 flex items-center gap-4">
+          <span>HOST COMMITTED: <strong class="text-white">3.50 GB</strong> / 12.00 GB</span>
+          <span class="text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/80">OPTIMAL LOW FOOTPRINT</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono">
+        
+        <!-- TIER 1 -->
+        <div class="bg-panelDark/80 p-2.5 rounded border border-crimsonDark/40">
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-red-400 font-bold">TIER 1 // CORE SUBSTRATE</span>
+            <span class="text-zinc-300">1.25 GB / 1.25 GB (100%)</span>
+          </div>
+          <div class="text-[10px] text-zinc-500 mb-1.5">768MB VFS-NVRAM Slab + Atomic IPC Rings</div>
+          <div class="w-full bg-zinc-950 h-3 rounded overflow-hidden p-0.5 border border-zinc-800 flex gap-0.5">
+            <!-- Segmented LED style -->
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+            <div class="h-full flex-1 bg-crimson shadow-[0_0_6px_#ff1122]"></div>
+          </div>
+        </div>
+
+        <!-- TIER 2 -->
+        <div class="bg-panelDark/80 p-2.5 rounded border border-crimsonDark/40">
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-amber-400 font-bold">TIER 2 // WORKBENCH ENGINE</span>
+            <span class="text-zinc-300">1.82 GB / 2.50 GB (72%)</span>
+          </div>
+          <div class="text-[10px] text-zinc-500 mb-1.5">VS Code Headless + Native Clang/Rust Tools</div>
+          <div class="w-full bg-zinc-950 h-3 rounded overflow-hidden p-0.5 border border-zinc-800 flex gap-0.5">
+            <div class="h-full flex-1 bg-amber-500 shadow-[0_0_6px_#f59e0b]"></div>
+            <div class="h-full flex-1 bg-amber-500 shadow-[0_0_6px_#f59e0b]"></div>
+            <div class="h-full flex-1 bg-amber-500 shadow-[0_0_6px_#f59e0b]"></div>
+            <div class="h-full flex-1 bg-amber-500 shadow-[0_0_6px_#f59e0b]"></div>
+            <div class="h-full flex-1 bg-amber-500 shadow-[0_0_6px_#f59e0b]"></div>
+            <div class="h-full flex-1 bg-amber-500/70"></div>
+            <div class="h-full flex-1 bg-zinc-800"></div>
+            <div class="h-full flex-1 bg-zinc-800"></div>
+          </div>
+        </div>
+
+        <!-- TIER 3 -->
+        <div class="bg-panelDark/80 p-2.5 rounded border border-crimsonDark/40">
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-cyan-400 font-bold">TIER 3 // DeX MULTI-MONITOR</span>
+            <span class="text-zinc-300">2.10 GB / 3.50 GB (60%)</span>
+          </div>
+          <div class="text-[10px] text-zinc-500 mb-1.5">Vulkan Swapchain Framebuffer + GPU Pass-thru</div>
+          <div class="w-full bg-zinc-950 h-3 rounded overflow-hidden p-0.5 border border-zinc-800 flex gap-0.5">
+            <div class="h-full flex-1 bg-cyan-500 shadow-[0_0_6px_#06b6d4]"></div>
+            <div class="h-full flex-1 bg-cyan-500 shadow-[0_0_6px_#06b6d4]"></div>
+            <div class="h-full flex-1 bg-cyan-500 shadow-[0_0_6px_#06b6d4]"></div>
+            <div class="h-full flex-1 bg-cyan-500 shadow-[0_0_6px_#06b6d4]"></div>
+            <div class="h-full flex-1 bg-cyan-500/70"></div>
+            <div class="h-full flex-1 bg-zinc-800"></div>
+            <div class="h-full flex-1 bg-zinc-800"></div>
+            <div class="h-full flex-1 bg-zinc-800"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 1: MAIN HOME HUD ==================== -->
+    <div id="tab-home" class="tab-content flex flex-col gap-5">
+      
+      <!-- Top Row: Interactive Canvas Sigil & Core Quick Overview -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Left: Central Sigil Canvas & Status -->
+        <div class="lg:col-span-5 chamfer-card brushed-metal red-hairline p-5 flex flex-col items-center justify-center relative overflow-hidden">
+          <div class="absolute top-3 left-4 font-mono text-[11px] text-red-400 tracking-wider">
+            <span>[SIGIL // VECTOR RUNTIME]</span>
+          </div>
+          <div class="absolute top-3 right-4 font-mono text-[11px] text-zinc-400">
+            <span>HASH: <strong class="text-white">0xC7_NOUMENOUS</strong></span>
+          </div>
+
+          <!-- HTML5 CANVAS CENTRAL SIGIL (Interactive Triquetra / Diamond / Heart) -->
+          <div class="my-3 relative flex items-center justify-center">
+            <canvas id="sigilCanvas" width="340" height="340" class="cursor-pointer max-w-full"></canvas>
+            <div class="absolute bottom-1 text-center font-mono text-[10px] text-zinc-400 pointer-events-none">
+              [TAP SIGIL TO PULSE VECTOR RESONANCE]
+            </div>
+          </div>
+
+          <!-- Sigil Telemetry Bar -->
+          <div class="w-full grid grid-cols-3 gap-2 font-mono text-center text-xs border-t border-crimsonDark/40 pt-3">
+            <div class="bg-panelDark/90 p-2 rounded border border-zinc-800">
+              <div class="text-[9px] text-zinc-500">NEON AUDIT</div>
+              <div id="sigilNeonStat" class="text-emerald-400 font-bold">SYNCHRONIZED</div>
+            </div>
+            <div class="bg-panelDark/90 p-2 rounded border border-zinc-800">
+              <div class="text-[9px] text-zinc-500">CADENCE (Φ)</div>
+              <div class="text-red-400 font-bold">1.6180339</div>
+            </div>
+            <div class="bg-panelDark/90 p-2 rounded border border-zinc-800">
+              <div class="text-[9px] text-zinc-500">SUBSTRATE</div>
+              <div class="text-cyan-400 font-bold">ARM64 LE</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Repository & Program Slots (Brushed-Metal Red-Ember Slots) -->
+        <div class="lg:col-span-7 flex flex-col gap-4">
+          
+          <div class="flex items-center justify-between font-mono">
+            <span class="text-xs font-bold text-white tracking-widest uppercase">// WORKBENCH RUNTIME CONTAINERS</span>
+            <span class="text-xs text-crimson">BRIDGE MODE: UNIX SOCKET + LOOPBACK</span>
+          </div>
+
+          <!-- Slot 1: CORPSE Compose Studio -->
+          <div class="chamfer-card brushed-metal-slot red-hairline p-4 relative group hover:border-crimson transition duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded bg-crimson/20 border border-crimson flex items-center justify-center text-crimson text-xl font-bold font-mono">
+                  80
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-sm sm:text-base font-bold font-mono text-white tracking-wide">CORPSE COMPOSE STUDIO</h3>
+                    <span class="px-1.5 py-0.2 text-[10px] font-mono bg-emerald-900/60 border border-emerald-500 text-emerald-300 rounded">ACTIVE RUNNING</span>
+                  </div>
+                  <div class="font-mono text-xs text-zinc-400 mt-0.5">
+                    ENDPOINT: <span class="text-cyan-300 font-bold">http://127.0.0.1:8080</span> &bull; PID: 4096 &bull; LATENCY: 0.12ms
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="switchTab('workspace')" class="chamfer-btn px-4 py-2 bg-crimson hover:bg-red-600 text-white font-mono text-xs font-bold uppercase tracking-wider red-hairline">
+                  OPEN WORKSPACE >>>
+                </button>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+              <span>ATTACHED SLAB: <strong class="text-zinc-200">#00 - #03 (256 MB)</strong></span>
+              <span class="text-emerald-400">IPC ZERO-COPY: ENABLED</span>
+            </div>
+          </div>
+
+          <!-- Slot 2: VS Code Web Workbench -->
+          <div class="chamfer-card brushed-metal-slot red-hairline p-4 relative group hover:border-crimson transition duration-300">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded bg-cyan-950/60 border border-cyan-500 flex items-center justify-center text-cyan-400 text-xl font-bold font-mono">
+                  VS
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-sm sm:text-base font-bold font-mono text-white tracking-wide">VS CODE WEB WORKBENCH</h3>
+                    <span class="px-1.5 py-0.2 text-[10px] font-mono bg-amber-900/60 border border-amber-500 text-amber-300 rounded">STANDBY POOL</span>
+                  </div>
+                  <div class="font-mono text-xs text-zinc-400 mt-0.5">
+                    ARM64 CODE SERVER &bull; EXTENSIONS: 14 INSTALLED &bull; SLAB: #04 - #07
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="spawnVSCodeWorkbench()" class="chamfer-btn px-3 py-1.5 bg-panel border border-zinc-600 hover:border-cyan-400 text-zinc-300 hover:text-white font-mono text-xs font-bold uppercase">
+                  INITIALIZE INSTANCE
+                </button>
+              </div>
+            </div>
+            <div class="mt-3 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+              <span>ROOT DIR: <strong class="text-zinc-200">/data/data/corpse.noumenous/workspace</strong></span>
+              <span class="text-amber-400">CLANG-18 / RUSTC 1.81</span>
+            </div>
+          </div>
+
+          <!-- Slot 3: Import Custom Repository Directory -->
+          <div onclick="openImportModal()" class="chamfer-card brushed-metal-slot border border-dashed border-crimsonDark/80 hover:border-crimson p-4 cursor-pointer text-center group transition">
+            <div class="flex items-center justify-center gap-3 text-red-400 group-hover:text-white transition">
+              <span class="text-2xl font-mono">[+]</span>
+              <span class="font-mono text-xs sm:text-sm font-bold tracking-widest uppercase">IMPORT REPOSITORY DIRECTORY OR GIT CLONE</span>
+            </div>
+            <p class="font-mono text-[11px] text-zinc-400 mt-1">
+              Mount external storage, Android DocumentsProvider, or clone via embedded libgit2 into VFS-NVRAM Slab
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Quick Substrate Live Event Stream -->
+      <div class="chamfer-card brushed-metal red-hairline p-4">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-crimsonDark/40 font-mono text-xs">
+          <span class="text-white font-bold">// NOUMENOUS SUBSTRATE TACTICAL EVENT KERNEL</span>
+          <span class="text-zinc-400">LOG REFRESH: REALTIME</span>
+        </div>
+        <div id="homeTerminalOutput" class="h-28 overflow-y-auto font-mono text-[11px] text-zinc-300 space-y-1 bg-panelDark/90 p-2.5 rounded border border-zinc-900">
+          <div><span class="text-crimson">[SYS-BOOT]</span> Kernel Substrate initialized. ARM64-v8a NEON vector dispatch mapped.</div>
+          <div><span class="text-cyan-400">[VFS-NVRAM]</span> 12 x 64MB Slabs (768MB Total) committed at physical offset 0x7FFF0000.</div>
+          <div><span class="text-emerald-400">[AUDIT]</span> Periodic NEON vaddv_u8 register scan executed. Result: 0xC7 (Golden Ratio Cadence Φ=1.6180339).</div>
+          <div><span class="text-amber-400">[SOCKET]</span> Localhost workstation bridge listening on 127.0.0.1:8080 (UNIX domain socket multiplexer enabled).</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 2: REPOSITORY & PROGRAMS ==================== -->
+    <div id="tab-repos" class="tab-content hidden flex-col gap-5">
+      <div class="chamfer-card brushed-metal red-hairline p-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b border-crimsonDark/40 gap-2">
+          <div>
+            <h2 class="text-lg font-bold font-mono text-white flex items-center gap-2">
+              <span class="text-crimson font-black">//</span> REPOSITORY MANAGER & WORKBENCH RUNTIMES
+            </h2>
+            <p class="text-xs text-zinc-400 font-mono mt-0.5">Manage local workspace roots, build toolchains, and PRoot/Termux translation layers</p>
+          </div>
+          <button onclick="openImportModal()" class="chamfer-btn px-4 py-2 bg-crimson hover:bg-red-600 text-white font-mono text-xs font-bold uppercase tracking-wider red-hairline self-start sm:self-auto">
+            [+] CLONE / MOUNT REPOSITORY
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="repoListGrid">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: VERIFY INTEGRITY (SIMD & DRIFT) ==================== -->
+    <div id="tab-verify" class="tab-content hidden flex-col gap-5">
+      
+      <!-- Top Overview & Controls -->
+      <div class="chamfer-card brushed-metal red-hairline p-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 mb-4 border-b border-crimsonDark/40 gap-3">
+          <div>
+            <div class="flex items-center gap-2 font-mono text-xs text-crimson">
+              <span>// SECURE VECTOR INTEGRITY ENGINE</span>
+              <span class="px-1.5 py-0.2 bg-red-950 border border-crimson text-red-300 rounded text-[10px]">ARM64 NEON SIMD</span>
+            </div>
+            <h2 class="text-xl font-black font-mono text-white tracking-wide mt-1">10 CORE ARCHITECTURAL PRIMITIVES</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="injectAnomalyDrift()" class="chamfer-btn px-4 py-2 bg-amber-600 hover:bg-amber-500 text-black font-mono text-xs font-black uppercase tracking-wider border border-amber-300">
+              ⚠️ INJECT ANOMALY DRIFT
+            </button>
+            <button onclick="triggerAtomicSelfHeal()" class="chamfer-btn px-4 py-2 bg-crimson hover:bg-red-600 text-white font-mono text-xs font-black uppercase tracking-wider red-hairline-bright">
+              ✨ ATOMIC SELF-HEAL (0xC7)
+            </button>
+          </div>
+        </div>
+
+        <!-- 10 Core Primitives Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3" id="primitivesGrid">
+          <!-- 10 primitives injected by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Live Vector Audit Simulator & Bitwise Inspector -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Live NEON Audit Simulator -->
+        <div class="lg:col-span-7 chamfer-card brushed-metal red-hairline p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-crimsonDark/40">
+              <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">NEON vaddv_u8 Audit Simulator</span>
+              <span id="auditBadge" class="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-600">STATE: NOMINAL</span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-center mb-4">
+              <div class="bg-panelDark p-2 rounded border border-zinc-800">
+                <div class="text-[9px] text-zinc-500 uppercase">EXPECTED CHECKSUM</div>
+                <div class="text-sm font-bold text-emerald-400">0xC7 (199)</div>
+              </div>
+              <div class="bg-panelDark p-2 rounded border border-zinc-800">
+                <div class="text-[9px] text-zinc-500 uppercase">CURRENT REGISTER</div>
+                <div id="currentAuditChecksum" class="text-sm font-bold text-white">0xC7</div>
+              </div>
+              <div class="bg-panelDark p-2 rounded border border-zinc-800">
+                <div class="text-[9px] text-zinc-500 uppercase">GOLDEN RATIO (Φ)</div>
+                <div class="text-sm font-bold text-red-400">1.618034</div>
+              </div>
+              <div class="bg-panelDark p-2 rounded border border-zinc-800">
+                <div class="text-[9px] text-zinc-500 uppercase">DRIFT DELTA (Δ)</div>
+                <div id="driftDeltaText" class="text-sm font-bold text-emerald-400">0.000000</div>
+              </div>
+            </div>
+
+            <!-- SIMD Register Vector Display (16 Bytes in NEON Q0 Register) -->
+            <div class="font-mono text-xs mb-2 text-zinc-400">ARM64 Q0 REGISTER [16 x 8-bit VECTOR LANES]:</div>
+            <div class="grid grid-cols-8 sm:grid-cols-16 gap-1 font-mono text-xs text-center" id="neonLanesContainer">
+              <!-- 16 lanes generated in JS -->
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-zinc-800 font-mono text-[11px] text-zinc-400">
+            <span>ARM64 PIPELINE: </span>
+            <code class="text-red-300 bg-panelDark px-2 py-1 rounded">ldr q0, [x1] ; uaddlv h1, v0.16b ; vaddv_u8 w2, v0.16b ; cmp w2, #0xC7</code>
+          </div>
+        </div>
+
+        <!-- Interactive Bitwise Field Calculator (5b/3b Split & OSDB-8) -->
+        <div class="lg:col-span-5 chamfer-card brushed-metal red-hairline p-5">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-crimsonDark/40">
+            <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">BITWISE FIELD CALCULATOR (OSDB-8)</span>
+            <span class="font-mono text-[10px] text-red-400">5b/3b SPLIT REGISTER</span>
+          </div>
+
+          <div class="space-y-4 font-mono text-xs">
+            <!-- 8 Bit Interactive Toggles -->
+            <div>
+              <div class="flex justify-between text-[11px] text-zinc-400 mb-1">
+                <span>OPCODE FIELD (5 BITS)</span>
+                <span>SUB-CMD (3 BITS)</span>
+              </div>
+              <div class="flex items-center gap-1 justify-between" id="bitTogglesContainer">
+                <!-- 8 Interactive Bit Buttons -->
+              </div>
+            </div>
+
+            <!-- Value Display -->
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="bg-panelDark p-2 rounded border border-zinc-800">
+                <div class="text-[9px] text-zinc-500">HEX BYTE</div>
+                <div id="bitwiseHexVal" class="text-base font-bold text-crimson">0xC7</div>
+              </div>
+              <div class="bg-panelDark p-2 rounded border border-zinc-800">
+                <div class="text-[9px] text-zinc-500">5b OPCODE</div>
+                <div id="bitwiseOpcodeVal" class="text-base font-bold text-amber-400">0x18 (24)</div>
+              </div>
+              <div class="bg-panelDark p-2 rounded border border-zinc-800">
+                <div class="text-[9px] text-zinc-500">3b SUB-CMD</div>
+                <div id="bitwiseSubVal" class="text-base font-bold text-cyan-400">0x07 (7)</div>
+              </div>
+            </div>
+
+            <!-- OSDB-8 Rotation Controls -->
+            <div class="pt-2 border-t border-zinc-800 flex items-center justify-between gap-2">
+              <button onclick="rotateRegisterBits(-1)" class="chamfer-btn flex-1 py-1.5 bg-panel border border-zinc-700 hover:border-crimson text-zinc-300 font-bold">
+                &lt;&lt; ROTATE LEFT (ROL)
+              </button>
+              <button onclick="rotateRegisterBits(1)" class="chamfer-btn flex-1 py-1.5 bg-panel border border-zinc-700 hover:border-crimson text-zinc-300 font-bold">
+                ROTATE RIGHT (ROR) &gt;&gt;
+              </button>
+            </div>
+            <div class="text-[10px] text-zinc-500 leading-tight">
+              OSDB-8: Cyclic Galois-field vector dispersion prevents cache corruption across DeX presentation swaps.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 4: MANAGE SUBSTRATE (VFS-NVRAM SLABS) ==================== -->
+    <div id="tab-substrate" class="tab-content hidden flex-col gap-5">
+      
+      <!-- Top Slab Overview & Allocator Slider -->
+      <div class="chamfer-card brushed-metal red-hairline p-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between pb-4 mb-4 border-b border-crimsonDark/40 gap-3">
+          <div>
+            <div class="font-mono text-xs text-crimson font-bold uppercase tracking-widest">// VFS-NVRAM ZERO-COPY CONTROLLER</div>
+            <h2 class="text-xl font-black font-mono text-white mt-1">12 x 64MB SLAB TOPOLOGY (768 MB PERMANENT VFS)</h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="syncAllSlabs()" class="chamfer-btn px-4 py-2 bg-crimson hover:bg-red-600 text-white font-mono text-xs font-black uppercase red-hairline">
+              ATOMIC MSYNC() FLUSH ALL
+            </button>
+          </div>
+        </div>
+
+        <!-- 12 x 64MB Slab Visual Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 mb-6" id="slabGridContainer">
+          <!-- 12 slabs dynamically rendered with status -->
+        </div>
+
+        <!-- Dynamic Allocator Slider -->
+        <div class="bg-panelDark/90 p-4 rounded border border-zinc-800 font-mono">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs mb-2">
+            <span class="text-zinc-300 font-bold">DYNAMIC FOOTPRINT SCALING SLIDER</span>
+            <span id="sliderValueText" class="text-crimson font-bold">TIER 1 (1.25 GB)</span>
+          </div>
+          <input type="range" min="1" max="3" value="1" step="1" id="memoryTierSlider" oninput="updateMemoryTier(this.value)" class="w-full accent-crimson cursor-pointer">
+          <div class="flex justify-between text-[10px] text-zinc-500 mt-1">
+            <span>Tier 1: Core Substrate (1.25 GB)</span>
+            <span>Tier 2: Dual Build (2.50 GB)</span>
+            <span>Tier 3: Full DeX Vulkan (3.50 GB)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart.js Telemetry Breakdown & Live IPC Socket Router -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Chart.js Substrate Bar Breakdown -->
+        <div class="lg:col-span-6 chamfer-card brushed-metal red-hairline p-5">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-crimsonDark/40">
+            <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">Memory Allocation Topology</span>
+            <span class="font-mono text-[10px] text-emerald-400">STACKED VFS-NVRAM</span>
+          </div>
+          <div class="h-64 relative">
+            <canvas id="memoryChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Live IPC Router & Slab Inspector Modal/Card -->
+        <div class="lg:col-span-6 chamfer-card brushed-metal red-hairline p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-crimsonDark/40">
+              <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">SLAB DETAILED INSPECTOR</span>
+              <span id="selectedSlabId" class="font-mono text-xs text-crimson font-bold">SLAB #00</span>
+            </div>
+            
+            <div id="slabDetailContent" class="space-y-3 font-mono text-xs">
+              <div class="bg-panelDark p-3 rounded border border-zinc-800 space-y-1.5">
+                <div class="flex justify-between text-zinc-400">
+                  <span>VIRTUAL ADDRESS:</span>
+                  <span id="slabDetailAddr" class="text-white font-bold">0x7FFF0000 - 0x7FFF3FFF</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                  <span>CAPACITY:</span>
+                  <span class="text-white">64.0 MB (67,108,864 Bytes)</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                  <span>PURPOSE:</span>
+                  <span id="slabDetailPurpose" class="text-cyan-400 font-bold">CORPSE Studio IPC & Framebuffer</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                  <span>DIRTY STATE:</span>
+                  <span id="slabDetailDirty" class="text-emerald-400">CLEAN (MSYNC COMMITTED)</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                  <span>LOCK STATUS:</span>
+                  <span class="text-amber-400">PINNED IN NVRAM</span>
+                </div>
+              </div>
+
+              <div class="flex gap-2">
+                <button onclick="toggleSlabDirtyState()" class="chamfer-btn flex-1 py-2 bg-panel border border-zinc-700 hover:border-amber-400 text-zinc-200 text-xs font-bold">
+                  DIRTY BUFFER TEST
+                </button>
+                <button onclick="flushActiveSlab()" class="chamfer-btn flex-1 py-2 bg-crimson hover:bg-red-600 text-white text-xs font-bold red-hairline">
+                  MSYNC() COMMIT SLAB
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-zinc-800 font-mono text-[11px] text-zinc-400">
+            <span class="text-zinc-500">IPC LATENCY BENCHMARK: </span>
+            <span class="text-emerald-400 font-bold">0.118 ms (Zero copy via shared ashmem/mmap)</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 5: BACKUP & PACKAGE (MODE A / MODE B) ==================== -->
+    <div id="tab-backup" class="tab-content hidden flex-col gap-5">
+      <div class="chamfer-card brushed-metal red-hairline p-5">
+        <div class="pb-3 mb-4 border-b border-crimsonDark/40">
+          <div class="font-mono text-xs text-crimson font-bold uppercase tracking-widest">// NOUMENOUS DISTRIBUTION ARTIFACTS</div>
+          <h2 class="text-xl font-black font-mono text-white mt-1">DUAL-MODE PACKAGING ENGINE</h2>
+          <p class="text-xs text-zinc-400 font-mono mt-1">Generate deployable Android APK containers or self-contained Zstandard .corpse.zst workstation vaults</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+          
+          <!-- MODE A: STANDALONE APK -->
+          <div id="packModeA" onclick="selectPackMode('A')" class="chamfer-card brushed-metal-slot red-hairline p-5 cursor-pointer hover:border-crimson transition group">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">📱</span>
+                <span class="font-mono text-sm font-bold text-white">MODE A: STANDALONE APK</span>
+              </div>
+              <input type="radio" name="packMode" id="radioModeA" checked class="accent-crimson">
+            </div>
+            <p class="font-mono text-xs text-zinc-400 mb-4">
+              Packages runtime as an installable Android APK with embedded NDK native binaries (<code class="text-red-300">libcorpse.so</code>), automated Samsung DeX presentation bindings, and userland rootfs.
+            </p>
+            <div class="space-y-1 font-mono text-[11px] text-zinc-500 border-t border-zinc-800 pt-2">
+              <div>&bull; Output: <span class="text-white">ProjectNoumenous-signed.apk</span></div>
+              <div>&bull; Signature: <span class="text-emerald-400">APK Signature Scheme v3</span></div>
+              <div>&bull; Install Method: <span class="text-zinc-300">Direct Sideload / PackageInstaller API</span></div>
+            </div>
+          </div>
+
+          <!-- MODE B: ZSTANDARD VAULT (.corpse.zst) -->
+          <div id="packModeB" onclick="selectPackMode('B')" class="chamfer-card brushed-metal-slot border border-zinc-800 p-5 cursor-pointer hover:border-crimson transition group">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl">🗜️</span>
+                <span class="font-mono text-sm font-bold text-white">MODE B: ZSTD VAULT (.corpse.zst)</span>
+              </div>
+              <input type="radio" name="packMode" id="radioModeB" class="accent-crimson">
+            </div>
+            <p class="font-mono text-xs text-zinc-400 mb-4">
+              Cryptographically verified Zstandard archive with <code class="text-red-300">4095+1 byte header gate</code>. Ultra-fast decompressed streaming direct into VFS-NVRAM slabs.
+            </p>
+            <div class="space-y-1 font-mono text-[11px] text-zinc-500 border-t border-zinc-800 pt-2">
+              <div>&bull; Output: <span class="text-white">workstation-archive.corpse.zst</span></div>
+              <div>&bull; Compression: <span class="text-cyan-400">Zstd Level 19 with Golden Cadence</span></div>
+              <div>&bull; Integrity: <span class="text-amber-400">SHA-256 + 0xC7 Atomic Trailer</span></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Packaging Controls & Progress -->
+        <div class="bg-panelDark/90 p-4 rounded border border-zinc-800 font-mono">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+            <div>
+              <div class="text-xs font-bold text-white uppercase">PACKAGE COMPILATION PIPELINE</div>
+              <div id="packageStatusLabel" class="text-[11px] text-zinc-400">READY TO BUNDLE ARTIFACT</div>
+            </div>
+            <button onclick="startPackagingProcess()" id="packActionBtn" class="chamfer-btn px-6 py-2.5 bg-crimson hover:bg-red-600 text-white font-mono text-xs font-black uppercase tracking-wider red-hairline">
+              BUILD & PACKAGE ARTIFACT >>>
+            </button>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full bg-zinc-950 h-3 rounded overflow-hidden p-0.5 border border-zinc-800 mb-3">
+            <div id="packagingProgressBar" class="h-full bg-crimson w-0 transition-all duration-300 shadow-[0_0_8px_#ff1122]"></div>
+          </div>
+
+          <!-- Build Console Output -->
+          <div id="packagingConsole" class="h-28 overflow-y-auto bg-black/80 p-2.5 rounded border border-zinc-900 text-[11px] text-zinc-300 space-y-1 font-mono">
+            <div class="text-zinc-600">// Press 'BUILD & PACKAGE ARTIFACT' to initiate automated pipeline...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 6: LIVE ACTIVE WORKSTATION (SIMULATION) ==================== -->
+    <div id="tab-workspace" class="tab-content hidden flex-col gap-5">
+      <div class="chamfer-card brushed-metal red-hairline p-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-3 border-b border-crimsonDark/40 gap-2">
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+            <div>
+              <span class="font-mono text-xs font-bold text-white">CORPSE COMPOSE WORKBENCH // 127.0.0.1:8080</span>
+              <span class="block text-[11px] text-zinc-400 font-mono">Simulated Localhost Mobile-Desktop IDE Session</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 font-mono text-xs">
+            <button onclick="executeCodeInSubstrate()" class="chamfer-btn px-4 py-1.5 bg-crimson hover:bg-red-600 text-white font-bold red-hairline">
+              RUN IN SUBSTRATE (F5)
+            </button>
+            <button onclick="resetWorkspaceEditor()" class="chamfer-btn px-3 py-1.5 bg-panel border border-zinc-700 hover:border-zinc-500 text-zinc-300">
+              RELOAD CODE
+            </button>
+          </div>
+        </div>
+
+        <!-- Integrated Mini IDE Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 font-mono">
+          
+          <!-- File Explorer Sidebar -->
+          <div class="lg:col-span-3 bg-panelDark p-3 rounded border border-zinc-800 text-xs">
+            <div class="text-[10px] text-zinc-500 uppercase font-bold mb-2">EXPLORER // WORKSPACE</div>
+            <ul class="space-y-1.5 text-zinc-400">
+              <li class="cursor-pointer hover:text-white flex items-center gap-1.5 text-red-300 font-bold bg-zinc-900/80 px-2 py-1 rounded">
+                <span>📄</span> main_substrate.rs
+              </li>
+              <li class="cursor-pointer hover:text-white flex items-center gap-1.5 px-2 py-1">
+                <span>⚙️</span> substrate_neon.cpp
+              </li>
+              <li class="cursor-pointer hover:text-white flex items-center gap-1.5 px-2 py-1">
+                <span>📦</span> Cargo.toml
+              </li>
+              <li class="cursor-pointer hover:text-white flex items-center gap-1.5 px-2 py-1">
+                <span>🛡️</span> 0xc7_guard.s
+              </li>
+            </ul>
+
+            <div class="mt-4 pt-3 border-t border-zinc-800 text-[10px] text-zinc-500">
+              <div>COMPILER: rustc 1.81.0 (ARM64)</div>
+              <div>TARGET: aarch64-linux-android</div>
+              <div>LINKER: lld (Zero Copy)</div>
+            </div>
+          </div>
+
+          <!-- Code Editor Pane -->
+          <div class="lg:col-span-9 flex flex-col gap-3">
+            <div class="relative bg-black rounded border border-zinc-800 overflow-hidden">
+              <div class="bg-zinc-950 px-3 py-1.5 text-[10px] text-zinc-400 border-b border-zinc-800 flex justify-between">
+                <span>main_substrate.rs &bull; UTF-8 &bull; Rust</span>
+                <span class="text-emerald-400">VFS SYNC ACTIVE</span>
+              </div>
+              <textarea id="workstationCodeEditor" rows="11" class="w-full bg-black text-emerald-300 font-mono text-xs p-3 outline-none resize-none leading-relaxed selection:bg-crimson">
+// Project Noumenous: CORPSE Substrate Entrypoint
+use std::os::raw::c_void;
+
+#[repr(C)]
+pub struct SubstrateSlab {
+    pub slab_id: u32,
+    pub capacity_bytes: usize,
+    pub mmap_ptr: *mut c_void,
+    pub golden_ratio_phi: f64,
+}
+
+fn main() {
+    println!(">>> Initializing CORPSE Workstation Native Bridge...");
+    let phi = 1.618033988749895;
+    let checksum = 0xC7;
+    println!(">>> ARM64 NEON Vector Engine Verified: 0x{:X}", checksum);
+    println!(">>> Golden Cadence: {}", phi);
+}
+              </textarea>
+            </div>
+
+            <!-- Embedded Interactive Console Output -->
+            <div class="bg-panelDark p-3 rounded border border-zinc-800">
+              <div class="flex justify-between items-center text-[10px] text-zinc-500 font-bold mb-1.5">
+                <span>TERMINAL // BASH 5.2 [127.0.0.1:8080]</span>
+                <span id="termStatus" class="text-zinc-400">READY</span>
+              </div>
+              <div id="workstationExecOutput" class="h-28 overflow-y-auto font-mono text-[11px] text-zinc-300 space-y-1 bg-black/80 p-2 rounded border border-zinc-900">
+                <div class="text-zinc-500">corpseguest@dex-noumenous:~/workspace$ rustc main_substrate.rs -O --target=aarch64-linux-android</div>
+                <div class="text-emerald-400">Compilation finished with 0 errors, 0 warnings.</div>
+                <div>corpseguest@dex-noumenous:~/workspace$ ./main_substrate</div>
+                <div class="text-cyan-300">>>> Initializing CORPSE Workstation Native Bridge...</div>
+                <div class="text-cyan-300">>>> ARM64 NEON Vector Engine Verified: 0xC7</div>
+                <div class="text-cyan-300">>>> Golden Cadence: 1.618033988749895</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 7: ANDROID STUDIO BLUEPRINT CODE ==================== -->
+    <div id="tab-blueprint" class="tab-content hidden flex-col gap-5">
+      <div class="chamfer-card brushed-metal red-hairline p-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b border-crimsonDark/40 gap-2">
+          <div>
+            <div class="font-mono text-xs text-crimson font-bold uppercase tracking-widest">// NOUMENOUS CODE BLUEPRINTS</div>
+            <h2 class="text-xl font-black font-mono text-white mt-1">PRODUCTION NATIVE SUBSTRATE IMPLEMENTATIONS</h2>
+            <p class="text-xs text-zinc-400 font-mono mt-0.5">ARM64 SIMD Assembly, C++ Slab Allocator, and Kotlin DeX Bridge bindings</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="copyBlueprintCode()" class="chamfer-btn px-4 py-2 bg-crimson hover:bg-red-600 text-white font-mono text-xs font-bold uppercase red-hairline">
+              COPY CODE TO CLIPBOARD
+            </button>
+          </div>
+        </div>
+
+        <!-- Blueprint Code Tabs -->
+        <div class="flex items-center gap-2 mb-3 border-b border-zinc-800 pb-2 font-mono text-xs overflow-x-auto">
+          <button onclick="showBlueprintSnippet('asm')" id="bTab-asm" class="px-3 py-1 bg-crimson text-white rounded font-bold">ARM64 Assembly (NEON)</button>
+          <button onclick="showBlueprintSnippet('cpp')" id="bTab-cpp" class="px-3 py-1 bg-panel text-zinc-400 rounded hover:text-white">C++20 (VFS Slab Manager)</button>
+          <button onclick="showBlueprintSnippet('kt')" id="bTab-kt" class="px-3 py-1 bg-panel text-zinc-400 rounded hover:text-white">Kotlin (DeX Presentation)</button>
+        </div>
+
+        <div class="relative bg-black rounded border border-zinc-800 p-4 overflow-x-auto font-mono text-xs text-steelText leading-relaxed">
+          <pre id="blueprintCodePre" class="text-zinc-300">
+// aarch64 NEON simd audit verification
+.global corpse_neon_audit_vector
+.type corpse_neon_audit_vector, %function
+
+corpse_neon_audit_vector:
+    // x0 = pointer to 16-byte memory vector
+    ldr     q0, [x0]                 // load 128-bit vector into NEON Q0
+    uaddlv  h1, v0.16b               // unsigned pairwise add into 16-bit lane
+    vaddv_u8 w0, v0.16b              // horizontal across-vector 8-bit sum
+    and     w0, w0, #0xFF            // truncate to 8-bit checksum
+    cmp     w0, #0xC7                // test against Golden Noumenous 0xC7
+    cset    w0, eq                   // return 1 if valid, 0 if drift
+    ret
+          </pre>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== REPOSITORY IMPORT MODAL ==================== -->
+  <div id="importModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="chamfer-card brushed-metal red-hairline max-w-lg w-full p-6 relative">
+      <button onclick="closeImportModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white font-mono font-bold text-lg">✕</button>
+      <div class="flex items-center gap-2 text-crimson font-mono text-xs font-bold mb-1">
+        <span>// MOUNT NEW REPOSITORY</span>
+      </div>
+      <h3 class="text-lg font-bold font-mono text-white mb-4">IMPORT REPOSITORY DIRECTORY</h3>
+      
+      <div class="space-y-4 font-mono text-xs">
+        <div>
+          <label class="block text-zinc-400 mb-1">REPOSITORY NAME</label>
+          <input type="text" id="modalRepoName" value="my-project-core" class="w-full bg-panelDark border border-zinc-700 p-2 text-white rounded outline-none focus:border-crimson">
+        </div>
+        <div>
+          <label class="block text-zinc-400 mb-1">SOURCE PATH / GIT URL</label>
+          <input type="text" id="modalRepoPath" value="https://github.com/torvalds/linux.git" class="w-full bg-panelDark border border-zinc-700 p-2 text-white rounded outline-none focus:border-crimson">
+        </div>
+        <div>
+          <label class="block text-zinc-400 mb-1">ASSIGNED VFS-NVRAM SLAB TARGET</label>
+          <select id="modalRepoSlab" class="w-full bg-panelDark border border-zinc-700 p-2 text-white rounded outline-none focus:border-crimson">
+            <option value="Slab #08">Slab #08 (64MB Cache Pool)</option>
+            <option value="Slab #09">Slab #09 (64MB Cache Pool)</option>
+            <option value="Slab #10">Slab #10 (64MB Cache Pool)</option>
+            <option value="Slab #11">Slab #11 (64MB Cache Pool)</option>
+          </select>
+        </div>
+
+        <div class="pt-3 border-t border-zinc-800 flex justify-end gap-2">
+          <button onclick="closeImportModal()" class="chamfer-btn px-4 py-2 bg-panel border border-zinc-700 text-zinc-300 font-bold">CANCEL</button>
+          <button onclick="confirmImportRepo()" class="chamfer-btn px-5 py-2 bg-crimson hover:bg-red-600 text-white font-bold red-hairline">MOUNT TO SUBSTRATE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TACTICAL TOAST NOTIFICATION CONTAINER ==================== -->
+  <div id="toastContainer" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ==================== CORE INTERACTIVE JAVASCRIPT ==================== -->
+  <script>
+    /* ----------------------------------------------------
+       GLOBAL STATE & ARCHITECTURAL CONSTANTS
+    ---------------------------------------------------- */
+    const STATE = {
+      activeTab: 'home',
+      currentChecksum: 0xC7,
+      isDrifted: false,
+      driftDelta: 0.0,
+      activeBits: [1, 1, 0, 0, 0, 1, 1, 1], // Represents 0xC7 (11000111)
+      memoryTier: 1, // 1: 1.25GB, 2: 2.5GB, 3: 3.5GB
+      slabs: Array.from({ length: 12 }, (_, i) => ({
+        id: i,
+        name: `SLAB #${i.toString().padStart(2, '0')}`,
+        sizeMB: 64,
+        allocated: i < 8,
+        dirty: false,
+        purpose: i < 4 ? 'VFS-NVRAM Core & IPC' : i < 8 ? 'Workbench Heap & Toolchains' : 'Ephemeral Slab Cache'
+      })),
+      repos: [
+        { name: 'CORPSE Compose Studio', port: '8080', status: 'ACTIVE', path: '/data/corpse/studio', slabs: '#00 - #03' },
+        { name: 'VS Code Web Server', port: '8000', status: 'STANDBY', path: '/data/corpse/vscode', slabs: '#04 - #07' },
+        { name: 'Vulkan Swapchain Compositor', port: 'Native', status: 'RUNNING', path: '/dev/dri/renderD128', slabs: '#08 - #09' }
+      ],
+      packagingMode: 'A',
+      selectedSlab: 0
+    };
+
+    /* ----------------------------------------------------
+       INITIALIZATION
+    ---------------------------------------------------- */
+    window.onload = function() {
+      initSigilCanvas();
+      initChart();
+      renderPrimitives();
+      renderBitwiseCalculator();
+      renderNeonLanes();
+      renderSlabs();
+      renderRepoList();
+      startClocks();
+      setupAudioListeners();
+    };
+
+    function setupAudioListeners() {
+      document.querySelectorAll('button, input, [role="button"]').forEach(el => {
+        el.addEventListener('click', () => AudioEngine.click());
+      });
+    }
+
+    function toggleAudio() {
+      AudioEngine.muted = !AudioEngine.muted;
+      document.getElementById('audioIcon').textContent = AudioEngine.muted ? '🔇' : '🔊';
+      showToast(AudioEngine.muted ? 'TACTICAL AUDIO MUTED' : 'TACTICAL AUDIO ACTIVE', 'info');
+    }
+
+    function startClocks() {
+      setInterval(() => {
+        const now = new Date();
+        const timeStr = now.toTimeString().split(' ')[0] + ' UTC';
+        const el = document.getElementById('liveClock');
+        if (el) el.textContent = timeStr;
+      }, 1000);
+    }
+
+    /* ----------------------------------------------------
+       TAB NAVIGATION CONTROLLER
+    ---------------------------------------------------- */
+    function switchTab(tabId) {
+      AudioEngine.action();
+      STATE.activeTab = tabId;
+
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.hud-tab-btn').forEach(btn => {
+        btn.classList.remove('red-hairline-bright', 'bg-gradient-to-b', 'from-[#22070a]');
+        btn.classList.add('red-hairline');
+      });
+
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      const activeBtn = document.getElementById(`tabBtn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('red-hairline');
+        activeBtn.classList.add('red-hairline-bright', 'bg-gradient-to-b', 'from-[#22070a]');
+      }
+
+      if (tabId === 'substrate' && window.myMemoryChart) {
+        window.myMemoryChart.resize();
+      }
+    }
+
+    /* ----------------------------------------------------
+       CANVAS CENTRAL SIGIL: TRIQUETRA & DIAMOND HEART
+    ---------------------------------------------------- */
+    let sigilAngle = 0;
+    let sigilPulse = 0;
+
+    function initSigilCanvas() {
+      const canvas = document.getElementById('sigilCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      canvas.addEventListener('click', () => {
+        AudioEngine.heal();
+        sigilPulse = 1.0;
+        showToast('SIGIL RESONANCE PULSED: 0xC7 HARMONIC', 'success');
+      });
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        sigilAngle += 0.008;
+        if (sigilPulse > 0) sigilPulse -= 0.02;
+        if (sigilPulse < 0) sigilPulse = 0;
+
+        // Background tactical concentric rings
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255, 17, 34, 0.15)';
+        ctx.lineWidth = 1;
+        for (let r = 40; r <= 140; r += 25) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // Rotating dashed tactical perimeter ring
+        ctx.translate(cx, cy);
+        ctx.rotate(-sigilAngle * 0.5);
+        ctx.setLineDash([4, 8]);
+        ctx.strokeStyle = 'rgba(255, 17, 34, 0.4)';
+        ctx.beginPath();
+        ctx.arc(0, 0, 150, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+
+        // Pulsing Sacred Geometry Triquetra with neon red glow
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(sigilAngle);
+
+        const glow = 10 + (sigilPulse * 30);
+        ctx.shadowColor = STATE.isDrifted ? '#ff8800' : '#ff1122';
+        ctx.shadowBlur = glow;
+        ctx.strokeStyle = STATE.isDrifted ? '#ff8800' : '#ff1122';
+        ctx.lineWidth = 2.5 + (sigilPulse * 2);
+
+        const radius = 55;
+        // Triquetra 3 interlocking arcs
+        for (let i = 0; i < 3; i++) {
+          const theta = (i * 2 * Math.PI) / 3;
+          const arcX = radius * Math.cos(theta);
+          const arcY = radius * Math.sin(theta);
+          ctx.beginPath();
+          ctx.arc(arcX, arcY, radius * 1.05, theta + Math.PI / 6, theta + (3 * Math.PI) / 2);
+          ctx.stroke();
+        }
+
+        // Inner Diamond / Heart Vector Core
+        ctx.rotate(-sigilAngle * 2);
+        ctx.beginPath();
+        ctx.moveTo(0, -32);
+        ctx.lineTo(24, 0);
+        ctx.lineTo(0, 36);
+        ctx.lineTo(-24, 0);
+        ctx.closePath();
+        ctx.fillStyle = STATE.isDrifted ? 'rgba(255, 136, 0, 0.3)' : 'rgba(255, 17, 34, 0.35)';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Core Center Node
+        ctx.beginPath();
+        ctx.arc(0, 0, 5 + (sigilPulse * 4), 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#ffffff';
+        ctx.shadowBlur = 12;
+        ctx.fill();
+
+        ctx.restore();
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    /* ----------------------------------------------------
+       10 CORE ARCHITECTURAL PRIMITIVES
+    ---------------------------------------------------- */
+    const PRIMITIVES_DATA = [
+      { id: '0x01', name: 'VFS-NVRAM Slab Allocator', desc: '12x64MB contiguous mmap kernel', status: 'LOCKED' },
+      { id: '0x02', name: 'Atomic Zero-Copy IPC', desc: 'Lock-free ashmem ring buffers', status: 'ACTIVE' },
+      { id: '0x03', name: 'ARM64 NEON SIMD Pipe', desc: 'vaddv_u8 register verification', status: 'SYNCED' },
+      { id: '0x04', name: 'Vulkan Direct Swapchain', desc: 'Hardware pass-thru surface sink', status: 'ENGAGED' },
+      { id: '0x05', name: 'Termux/PRoot Shim', desc: 'Userland syscall rootfs bridge', status: 'ROUTED' },
+      { id: '0x06', name: '4095+1 Byte Gate', desc: 'Header boundary alignment trap', status: 'SECURE' },
+      { id: '0x07', name: 'Zstandard Vault Engine', desc: 'Streaming level-19 decompression', status: 'ONLINE' },
+      { id: '0x08', name: 'OSDB-8 Rotation Register', desc: 'Cyclic Galois bitwise dispersion', status: 'SYNCED' },
+      { id: '0x09', name: 'DeX Display Presentation', desc: 'Multi-window desktop geometry', status: 'READY' },
+      { id: '0x0A', name: 'Golden Ratio (Φ) Pacer', desc: 'Phi=1.618034 harmonic cadence', status: 'CALIBRATED' }
+    ];
+
+    function renderPrimitives() {
+      const container = document.getElementById('primitivesGrid');
+      if (!container) return;
+      container.innerHTML = PRIMITIVES_DATA.map(p => `
+        <div class="bg-panelDark p-3 rounded border border-crimsonDark/40 font-mono flex flex-col justify-between hover:border-crimson transition">
+          <div>
+            <div class="flex items-center justify-between text-[10px] mb-1">
+              <span class="text-crimson font-bold">${p.id}</span>
+              <span class="text-emerald-400 font-semibold">[${p.status}]</span>
+            </div>
+            <div class="text-xs font-bold text-white mb-1 leading-snug">${p.name}</div>
+            <div class="text-[10px] text-zinc-400 leading-tight">${p.desc}</div>
+          </div>
+          <div class="mt-2 pt-1.5 border-t border-zinc-800 text-[9px] text-zinc-500 flex justify-between">
+            <span>RESILIENT</span>
+            <span class="text-red-400">0xC7 VERIFIED</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ----------------------------------------------------
+       NEON SIMD AUDIT SIMULATOR & DRIFT INJECTION
+    ---------------------------------------------------- */
+    function renderNeonLanes() {
+      const container = document.getElementById('neonLanesContainer');
+      if (!container) return;
+      
+      // Calculate 16 bytes representing lanes such that sum mod 256 = currentChecksum
+      const lanes = [];
+      let runningSum = 0;
+      for (let i = 0; i < 15; i++) {
+        const val = (i * 13) % 256;
+        lanes.push(val);
+        runningSum += val;
+      }
+      const lastByte = (STATE.currentChecksum - (runningSum % 256) + 256) % 256;
+      lanes.push(lastByte);
+
+      container.innerHTML = lanes.map((byte, idx) => `
+        <div class="p-1.5 rounded ${STATE.isDrifted ? 'bg-amber-950/80 border-amber-600' : 'bg-zinc-900 border-zinc-800'} border flex flex-col items-center">
+          <span class="text-[8px] text-zinc-500">v${idx}</span>
+          <span class="font-bold ${STATE.isDrifted ? 'text-amber-400' : 'text-crimson'} text-[11px]">0x${byte.toString(16).padStart(2, '0').toUpperCase()}</span>
+        </div>
+      `).join('');
+    }
+
+    function injectAnomalyDrift() {
+      AudioEngine.alert();
+      STATE.isDrifted = true;
+      STATE.currentChecksum = 0x4F; // Corrupted checksum
+      STATE.driftDelta = 0.381966; // Deviation from Golden Ratio
+
+      document.getElementById('currentAuditChecksum').textContent = '0x4F (CORRUPTED)';
+      document.getElementById('currentAuditChecksum').className = 'text-sm font-bold text-amber-400 animate-pulse';
+      document.getElementById('driftDeltaText').textContent = '+0.381966 (DRIFT)';
+      document.getElementById('driftDeltaText').className = 'text-sm font-bold text-amber-400';
+      document.getElementById('auditBadge').textContent = 'STATE: ANOMALY DRIFT';
+      document.getElementById('auditBadge').className = 'font-mono text-[10px] px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500 animate-pulse';
+      
+      document.getElementById('sigilNeonStat').textContent = 'ANOMALY DRIFT';
+      document.getElementById('sigilNeonStat').className = 'text-amber-400 font-bold';
+
+      renderNeonLanes();
+      showToast('CRITICAL: ARM64 NEON Audit checksum deviated to 0x4F!', 'alert');
+
+      // Add to terminal
+      logToHomeTerminal('CRITICAL DRIFT: NEON SIMD checksum anomaly detected! Deviation Δ=+0.381966.', 'amber');
+    }
+
+    function triggerAtomicSelfHeal() {
+      AudioEngine.heal();
+      STATE.isDrifted = false;
+      STATE.currentChecksum = 0xC7;
+      STATE.driftDelta = 0.0;
+
+      document.getElementById('currentAuditChecksum').textContent = '0xC7';
+      document.getElementById('currentAuditChecksum').className = 'text-sm font-bold text-emerald-400';
+      document.getElementById('driftDeltaText').textContent = '0.000000';
+      document.getElementById('driftDeltaText').className = 'text-sm font-bold text-emerald-400';
+      document.getElementById('auditBadge').textContent = 'STATE: NOMINAL';
+      document.getElementById('auditBadge').className = 'font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-600';
+      
+      document.getElementById('sigilNeonStat').textContent = 'SYNCHRONIZED';
+      document.getElementById('sigilNeonStat').className = 'text-emerald-400 font-bold';
+
+      renderNeonLanes();
+      showToast('SUCCESS: Atomic Self-Heal executed. Reset to Golden 0xC7.', 'success');
+      logToHomeTerminal('ATOMIC SELF-HEAL: Golden Cadence Φ restored. 0xC7 register armed.', 'emerald');
+    }
+
+    /* ----------------------------------------------------
+       BITWISE FIELD CALCULATOR (5b/3b & OSDB-8)
+    ---------------------------------------------------- */
+    function renderBitwiseCalculator() {
+      const container = document.getElementById('bitTogglesContainer');
+      if (!container) return;
+
+      container.innerHTML = STATE.activeBits.map((bit, idx) => {
+        const isOpcode = idx < 5;
+        return `
+          <button onclick="toggleBit(${idx})" class="flex-1 py-2 rounded font-mono font-bold text-xs border transition ${
+            bit === 1 
+              ? (isOpcode ? 'bg-amber-500 text-black border-amber-300' : 'bg-cyan-500 text-black border-cyan-300')
+              : 'bg-panelDark text-zinc-500 border-zinc-800 hover:border-zinc-600'
+          }">
+            <div class="text-[8px] opacity-75">${7 - idx}b</div>
+            <div>${bit}</div>
+          </button>
+        `;
+      }).join('');
+
+      // Evaluate values
+      let byteVal = 0;
+      STATE.activeBits.forEach((bit, i) => {
+        if (bit === 1) byteVal += Math.pow(2, 7 - i);
+      });
+
+      const opcodeVal = byteVal >> 3;
+      const subVal = byteVal & 0x07;
+
+      document.getElementById('bitwiseHexVal').textContent = '0x' + byteVal.toString(16).toUpperCase().padStart(2, '0');
+      document.getElementById('bitwiseOpcodeVal').textContent = `0x${opcodeVal.toString(16).toUpperCase()} (${opcodeVal})`;
+      document.getElementById('bitwiseSubVal').textContent = `0x${subVal.toString(16).toUpperCase()} (${subVal})`;
+    }
+
+    function toggleBit(index) {
+      STATE.activeBits[index] = STATE.activeBits[index] === 1 ? 0 : 1;
+      renderBitwiseCalculator();
+    }
+
+    function rotateRegisterBits(direction) {
+      AudioEngine.click();
+      if (direction === 1) { // ROR
+        const last = STATE.activeBits.pop();
+        STATE.activeBits.unshift(last);
+      } else { // ROL
+        const first = STATE.activeBits.shift();
+        STATE.activeBits.push(first);
+      }
+      renderBitwiseCalculator();
+      showToast('OSDB-8 Cyclic Rotation applied to register', 'info');
+    }
+
+    /* ----------------------------------------------------
+       VFS-NVRAM SLABS & MEMORY TOPOLOGY CONTROLLER
+    ---------------------------------------------------- */
+    function renderSlabs() {
+      const container = document.getElementById('slabGridContainer');
+      if (!container) return;
+
+      container.innerHTML = STATE.slabs.map(slab => `
+        <div onclick="selectSlab(${slab.id})" class="chamfer-card brushed-metal-slot p-2.5 cursor-pointer border ${
+          slab.id === STATE.selectedSlab ? 'border-crimson red-hairline-bright' : 'border-zinc-800 hover:border-crimsonDark'
+        } transition font-mono">
+          <div class="flex justify-between items-center text-[10px] mb-1">
+            <span class="text-white font-bold">${slab.name}</span>
+            <span class="${slab.allocated ? 'text-emerald-400' : 'text-zinc-600'}">●</span>
+          </div>
+          <div class="text-[11px] font-bold ${slab.dirty ? 'text-amber-400' : 'text-crimson'}">${slab.sizeMB} MB</div>
+          <div class="text-[9px] text-zinc-400 truncate mt-0.5">${slab.dirty ? '[DIRTY BUF]' : '[SYNCED]'}</div>
+        </div>
+      `).join('');
+    }
+
+    function selectSlab(id) {
+      AudioEngine.click();
+      STATE.selectedSlab = id;
+      const slab = STATE.slabs[id];
+      renderSlabs();
+
+      document.getElementById('selectedSlabId').textContent = slab.name;
+      document.getElementById('slabDetailAddr').textContent = `0x7FFF${(id * 4).toString(16).toUpperCase()}000 - 0x7FFF${((id * 4) + 3).toString(16).toUpperCase()}FFF`;
+      document.getElementById('slabDetailPurpose').textContent = slab.purpose;
+      document.getElementById('slabDetailDirty').textContent = slab.dirty ? 'DIRTY (NEEDS MSYNC)' : 'CLEAN (MSYNC COMMITTED)';
+      document.getElementById('slabDetailDirty').className = slab.dirty ? 'text-amber-400' : 'text-emerald-400';
+    }
+
+    function toggleSlabDirtyState() {
+      const slab = STATE.slabs[STATE.selectedSlab];
+      slab.dirty = !slab.dirty;
+      renderSlabs();
+      selectSlab(STATE.selectedSlab);
+      showToast(`Slab #${STATE.selectedSlab} modified to ${slab.dirty ? 'DIRTY' : 'CLEAN'}`, 'info');
+    }
+
+    function flushActiveSlab() {
+      AudioEngine.heal();
+      const slab = STATE.slabs[STATE.selectedSlab];
+      slab.dirty = false;
+      renderSlabs();
+      selectSlab(STATE.selectedSlab);
+      showToast(`msync() committed Slab #${STATE.selectedSlab} into NVRAM`, 'success');
+      logToHomeTerminal(`VFS-NVRAM: Atomic msync() successfully flushed Slab #${STATE.selectedSlab}.`, 'emerald');
+    }
+
+    function syncAllSlabs() {
+      AudioEngine.heal();
+      STATE.slabs.forEach(s => s.dirty = false);
+      renderSlabs();
+      selectSlab(STATE.selectedSlab);
+      showToast('Atomic msync() flushed all 12 Slabs to storage', 'success');
+      logToHomeTerminal('VFS-NVRAM: Synchronized all 12 x 64MB Slabs (768MB) without page faults.', 'emerald');
+    }
+
+    /* ----------------------------------------------------
+       CHART.JS MEMORY TOPOLOGY
+    ---------------------------------------------------- */
+    let memoryChart = null;
+    function initChart() {
+      const ctx = document.getElementById('memoryChart');
+      if (!ctx) return;
+
+      memoryChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Tier 1 (Substrate)', 'Tier 2 (Workbench)', 'Tier 3 (DeX Vulkan)'],
+          datasets: [
+            {
+              label: 'VFS-NVRAM (768 MB Fixed)',
+              data: [768, 768, 768],
+              backgroundColor: '#ff1122',
+              borderColor: '#cc0010',
+              borderWidth: 1
+            },
+            {
+              label: 'Dynamic Heap & Toolchains',
+              data: [512, 1792, 2816],
+              backgroundColor: '#1f2430',
+              borderColor: '#ff1122',
+              borderWidth: 1
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              stacked: true,
+              ticks: { color: '#8892b0', font: { family: 'JetBrains Mono', size: 10 } },
+              grid: { color: 'rgba(255, 255, 255, 0.05)' }
+            },
+            y: {
+              stacked: true,
+              ticks: { 
+                color: '#8892b0', 
+                font: { family: 'JetBrains Mono', size: 10 },
+                callback: (val) => `${val} MB`
+              },
+              grid: { color: 'rgba(255, 255, 255, 0.05)' }
+            }
+          },
+          plugins: {
+            legend: {
+              labels: { color: '#d8dee9', font: { family: 'JetBrains Mono', size: 11 } }
+            }
+          }
+        }
+      });
+      window.myMemoryChart = memoryChart;
+    }
+
+    function updateMemoryTier(tier) {
+      STATE.memoryTier = parseInt(tier);
+      const textMap = {
+        1: 'TIER 1 (1.25 GB Committed)',
+        2: 'TIER 2 (2.50 GB Committed)',
+        3: 'TIER 3 (3.50 GB Committed)'
+      };
+      document.getElementById('sliderValueText').textContent = textMap[tier];
+      showToast(`Substrate scaled to ${textMap[tier]}`, 'info');
+    }
+
+    /* ----------------------------------------------------
+       REPOSITORY LIST & IMPORT MODAL
+    ---------------------------------------------------- */
+    function renderRepoList() {
+      const container = document.getElementById('repoListGrid');
+      if (!container) return;
+
+      container.innerHTML = STATE.repos.map(r => `
+        <div class="chamfer-card brushed-metal-slot red-hairline p-4 flex flex-col justify-between font-mono">
+          <div>
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-xs font-bold text-white">${r.name}</span>
+              <span class="px-1.5 py-0.2 text-[9px] rounded ${r.status === 'ACTIVE' ? 'bg-emerald-950 text-emerald-400 border border-emerald-600' : 'bg-zinc-800 text-zinc-400'}">${r.status}</span>
+            </div>
+            <div class="text-[11px] text-zinc-400 mb-2">PORT: <strong class="text-cyan-300">${r.port}</strong> &bull; SLABS: ${r.slabs}</div>
+            <div class="text-[10px] text-zinc-500 break-all bg-black/60 p-1.5 rounded border border-zinc-900">${r.path}</div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-zinc-800 flex gap-2">
+            <button onclick="switchTab('workspace')" class="chamfer-btn flex-1 py-1.5 bg-crimson hover:bg-red-600 text-white text-xs font-bold red-hairline">LAUNCH</button>
+            <button onclick="showToast('Mount detached cleanly', 'info')" class="chamfer-btn px-3 py-1.5 bg-panel border border-zinc-700 text-zinc-400 text-xs font-bold">UNMOUNT</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openImportModal() {
+      AudioEngine.click();
+      document.getElementById('importModal').classList.remove('hidden');
+      document.getElementById('importModal').classList.add('flex');
+    }
+
+    function closeImportModal() {
+      document.getElementById('importModal').classList.add('hidden');
+      document.getElementById('importModal').classList.remove('flex');
+    }
+
+    function confirmImportRepo() {
+      const name = document.getElementById('modalRepoName').value;
+      const path = document.getElementById('modalRepoPath').value;
+      const slab = document.getElementById('modalRepoSlab').value;
+
+      if (!name) return;
+
+      STATE.repos.push({
+        name: name,
+        port: 'Dynamic',
+        status: 'STANDBY',
+        path: path,
+        slabs: slab
+      });
+
+      renderRepoList();
+      closeImportModal();
+      AudioEngine.heal();
+      showToast(`Repository '${name}' mounted into ${slab}`, 'success');
+      logToHomeTerminal(`REPO MOUNT: Directory ${name} linked into ${slab}. Ready for build.`, 'emerald');
+    }
+
+    function spawnVSCodeWorkbench() {
+      AudioEngine.action();
+      showToast('Spawning VS Code Headless Daemon on 127.0.0.1:8000', 'info');
+      setTimeout(() => {
+        switchTab('workspace');
+      }, 600);
+    }
+
+    /* ----------------------------------------------------
+       BACKUP & PACKAGE ENGINE (MODE A & B)
+    ---------------------------------------------------- */
+    function selectPackMode(mode) {
+      AudioEngine.click();
+      STATE.packagingMode = mode;
+      
+      const cardA = document.getElementById('packModeA');
+      const cardB = document.getElementById('packModeB');
+      const radioA = document.getElementById('radioModeA');
+      const radioB = document.getElementById('radioModeB');
+
+      if (mode === 'A') {
+        radioA.checked = true;
+        cardA.className = 'chamfer-card brushed-metal-slot red-hairline p-5 cursor-pointer hover:border-crimson transition group';
+        cardB.className = 'chamfer-card brushed-metal-slot border border-zinc-800 p-5 cursor-pointer hover:border-crimson transition group';
+      } else {
+        radioB.checked = true;
+        cardB.className = 'chamfer-card brushed-metal-slot red-hairline p-5 cursor-pointer hover:border-crimson transition group';
+        cardA.className = 'chamfer-card brushed-metal-slot border border-zinc-800 p-5 cursor-pointer hover:border-crimson transition group';
+      }
+    }
+
+    function startPackagingProcess() {
+      AudioEngine.action();
+      const btn = document.getElementById('packActionBtn');
+      const bar = document.getElementById('packagingProgressBar');
+      const consoleEl = document.getElementById('packagingConsole');
+      const statusLabel = document.getElementById('packageStatusLabel');
+
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
+      bar.style.width = '0%';
+      consoleEl.innerHTML = '';
+
+      function logLine(text, color = 'zinc-300') {
+        const line = document.createElement('div');
+        line.className = `text-${color}`;
+        line.textContent = `[${new Date().toISOString().substring(11, 19)}] ${text}`;
+        consoleEl.appendChild(line);
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+      }
+
+      logLine('INITIALIZING NOUMENOUS DISTRIBUTION COMPILER...', 'crimson');
+      statusLabel.textContent = 'PACKAGING IN PROGRESS...';
+
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 20;
+        bar.style.width = `${progress}%`;
+
+        if (progress === 20) {
+          logLine('Reading VFS-NVRAM Slab blocks (#00 through #07)...');
+        } else if (progress === 40) {
+          logLine('Enforcing 4095+1 byte header boundary gate...', 'emerald-400');
+        } else if (progress === 60) {
+          if (STATE.packagingMode === 'A') {
+            logLine('Injecting AndroidManifest.xml & libcorpse_neon.so bindings...');
+          } else {
+            logLine('Compressing rootfs via Zstandard Level 19 with Golden Cadence...');
+          }
+        } else if (progress === 80) {
+          logLine('Computing SHA-256 signature and embedding 0xC7 atomic trailer...');
+        } else if (progress >= 100) {
+          clearInterval(interval);
+          btn.disabled = false;
+          btn.classList.remove('opacity-50');
+          statusLabel.textContent = 'PACKAGING COMPLETE // READY FOR EXPORT';
+          AudioEngine.heal();
+
+          const artifactName = STATE.packagingMode === 'A' ? 'ProjectNoumenous-signed.apk' : 'workstation-vault.corpse.zst';
+          logLine(`ARTIFACT READY: ${artifactName} (31.4 MB)`, 'emerald-400 font-bold');
+          showToast(`SUCCESS: Built ${artifactName}!`, 'success');
+        }
+      }, 400);
+    }
+
+    /* ----------------------------------------------------
+       LIVE ACTIVE WORKSTATION TERMINAL & CODE SIMULATOR
+    ---------------------------------------------------- */
+    function executeCodeInSubstrate() {
+      AudioEngine.action();
+      const output = document.getElementById('workstationExecOutput');
+      const termStatus = document.getElementById('termStatus');
+
+      termStatus.textContent = 'COMPILING...';
+      termStatus.className = 'text-amber-400 font-bold';
+
+      const log = (text, cls = 'text-zinc-300') => {
+        const div = document.createElement('div');
+        div.className = cls;
+        div.textContent = text;
+        output.appendChild(div);
+        output.scrollTop = output.scrollHeight;
+      };
+
+      log('corpseguest@dex-noumenous:~/workspace$ ./run_substrate_bench', 'text-zinc-400');
+
+      setTimeout(() => {
+        log('>>> Allocating 64MB zero-copy slab buffer...', 'text-cyan-300');
+      }, 300);
+
+      setTimeout(() => {
+        log('>>> Dispatching ARM64 NEON SIMD vaddv_u8 audit...', 'text-cyan-300');
+      }, 600);
+
+      setTimeout(() => {
+        log('>>> VECTOR AUDIT RESULT: 0xC7 [VALID]', 'text-emerald-400 font-bold');
+        log('>>> Cadence: 1.618033988749895 &bull; DeX Surface ready on 127.0.0.1:8080', 'text-white');
+        termStatus.textContent = 'IDLE (EXIT 0)';
+        termStatus.className = 'text-emerald-400';
+        AudioEngine.heal();
+        showToast('Workstation binary executed successfully (0 errors)', 'success');
+      }, 1000);
+    }
+
+    function resetWorkspaceEditor() {
+      AudioEngine.click();
+      document.getElementById('workstationCodeEditor').value = 
+`// Project Noumenous: CORPSE Substrate Entrypoint
+use std::os::raw::c_void;
+
+#[repr(C)]
+pub struct SubstrateSlab {
+    pub slab_id: u32,
+    pub capacity_bytes: usize,
+    pub mmap_ptr: *mut c_void,
+    pub golden_ratio_phi: f64,
+}
+
+fn main() {
+    println!(">>> Initializing CORPSE Workstation Native Bridge...");
+    let phi = 1.618033988749895;
+    let checksum = 0xC7;
+    println!(">>> ARM64 NEON Vector Engine Verified: 0x{:X}", checksum);
+    println!(">>> Golden Cadence: {}", phi);
+}`;
+      showToast('Editor reloaded from VFS slab', 'info');
+    }
+
+    /* ----------------------------------------------------
+       BLUEPRINTS CODE DISPLAY & CLIPBOARD
+    ---------------------------------------------------- */
+    const BLUEPRINT_SNIPPETS = {
+      asm: `// aarch64 NEON simd audit verification
+.global corpse_neon_audit_vector
+.type corpse_neon_audit_vector, %function
+
+corpse_neon_audit_vector:
+    // x0 = pointer to 16-byte memory vector
+    ldr     q0, [x0]                 // load 128-bit vector into NEON Q0
+    uaddlv  h1, v0.16b               // unsigned pairwise add into 16-bit lane
+    vaddv_u8 w0, v0.16b              // horizontal across-vector 8-bit sum
+    and     w0, w0, #0xFF            // truncate to 8-bit checksum
+    cmp     w0, #0xC7                // test against Golden Noumenous 0xC7
+    cset    w0, eq                   // return 1 if valid, 0 if drift
+    ret`,
+      cpp: `// SubstrateVFS.cpp: 12 x 64MB Slab VFS-NVRAM Allocator
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <cstdint>
+#include <span>
+
+class CorpseSubstrateManager {
+public:
+    static constexpr size_t SLAB_SIZE = 64 * 1024 * 1024; // 64 MB
+    static constexpr size_t NUM_SLABS = 12;                // 768 MB Total
+
+    bool initializeSubstrate(const char* nvram_backing_path) {
+        int fd = open(nvram_backing_path, O_RDWR | O_CREAT, 0600);
+        ftruncate(fd, SLAB_SIZE * NUM_SLABS);
+        
+        m_basePtr = mmap(nullptr, SLAB_SIZE * NUM_SLABS, 
+                         PROT_READ | PROT_WRITE, 
+                         MAP_SHARED, fd, 0);
+        close(fd);
+        return m_basePtr != MAP_FAILED;
+    }
+
+    void msyncSlab(size_t slabIndex) {
+        if (slabIndex >= NUM_SLABS) return;
+        uint8_t* slabAddr = static_cast<uint8_t*>(m_basePtr) + (slabIndex * SLAB_SIZE);
+        msync(slabAddr, SLAB_SIZE, MS_ASYNC);
+    }
+private:
+    void* m_basePtr = nullptr;
+};`,
+      kt: `// WorkstationBridge.kt: Android DeX Presentation Manager
+package corpse.noumenous.substrate
+
+import android.app.Presentation
+import android.content.Context
+import android.os.Bundle
+import android.view.Display
+import android.webkit.WebView
+
+class DeXWorkstationPresentation(context: Context, display: Display) 
+    : Presentation(context, display) {
+
+    private lateinit var webView: WebView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        webView = WebView(context).apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            // Route directly to native UNIX socket bridge on localhost:8080
+            loadUrl("http://127.0.0.1:8080")
+        }
+        setContentView(webView)
+    }
+
+    external fun nativeVerifySlabChecksum(): Int
+    
+    companion object {
+        init {
+            System.loadLibrary("corpse_core")
+        }
+    }
+}`
+    };
+
+    function showBlueprintSnippet(lang) {
+      AudioEngine.click();
+      document.getElementById('blueprintCodePre').textContent = BLUEPRINT_SNIPPETS[lang];
+      
+      document.getElementById('bTab-asm').className = lang === 'asm' ? 'px-3 py-1 bg-crimson text-white rounded font-bold' : 'px-3 py-1 bg-panel text-zinc-400 rounded hover:text-white';
+      document.getElementById('bTab-cpp').className = lang === 'cpp' ? 'px-3 py-1 bg-crimson text-white rounded font-bold' : 'px-3 py-1 bg-panel text-zinc-400 rounded hover:text-white';
+      document.getElementById('bTab-kt').className = lang === 'kt' ? 'px-3 py-1 bg-crimson text-white rounded font-bold' : 'px-3 py-1 bg-panel text-zinc-400 rounded hover:text-white';
+    }
+
+    function copyBlueprintCode() {
+      const code = document.getElementById('blueprintCodePre').textContent;
+      const el = document.createElement('textarea');
+      el.value = code;
+      document.body.appendChild(el);
+      el.select();
+      try {
+        document.execCommand('copy');
+        AudioEngine.heal();
+        showToast('Blueprint copied to clipboard!', 'success');
+      } catch (e) {
+        showToast('Failed to copy', 'alert');
+      }
+      document.body.removeChild(el);
+    }
+
+    /* ----------------------------------------------------
+       TOAST & EVENT LOG HELPERS
+    ---------------------------------------------------- */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = `chamfer-card brushed-metal p-3 text-xs font-mono border flex items-center gap-2 pointer-events-auto shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 ${
+        type === 'alert' ? 'border-amber-500 text-amber-300' :
+        type === 'success' ? 'border-emerald-500 text-emerald-300' :
+        'border-crimson text-white'
+      }`;
+
+      const icon = type === 'alert' ? '⚠️' : type === 'success' ? '✨' : '🔴';
+      toast.innerHTML = `<span>${icon}</span><span class="font-bold">${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-4');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function logToHomeTerminal(msg, color = 'zinc-300') {
+      const box = document.getElementById('homeTerminalOutput');
+      if (!box) return;
+      const row = document.createElement('div');
+      row.innerHTML = `<span class="text-${color}">[${new Date().toTimeString().split(' ')[0]}]</span> ${msg}`;
+      box.appendChild(row);
+      box.scrollTop = box.scrollHeight;
+    }
+  </script>
+</body>
+</html>
