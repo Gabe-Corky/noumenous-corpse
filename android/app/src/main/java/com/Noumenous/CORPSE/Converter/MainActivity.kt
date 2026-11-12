@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.json.JSONObject
 
 private val Void = Color(0xFF070707)
 private val Panel = Color(0xFF101013)
@@ -61,6 +62,18 @@ class MainActivity : ComponentActivity() {
             )) {
                 ConverterHostScreen(
                     onLaunch = { startActivity(Intent(this, DesktopViewportActivity::class.java)) },
+                    onVerify = {
+                        try {
+                            val result = JSONObject(NativeSubstrate.runContractChecks(this))
+                            if (result.optBoolean("passed")) {
+                                "NATIVE CONTRACTS PASS • ${result.optInt("checks")} CHECKS • PAGE ${result.optInt("page_size_bytes")} B"
+                            } else {
+                                "NATIVE CONTRACT CHECK FAILED • PAGE ${result.optInt("page_size_bytes")} B"
+                            }
+                        } catch (error: Exception) {
+                            "CONTRACT CHECK ERROR • ${error.message ?: "invalid rules"}"
+                        }
+                    },
                 )
             }
         }
@@ -68,7 +81,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun ConverterHostScreen(onLaunch: () -> Unit) {
+private fun ConverterHostScreen(onLaunch: () -> Unit, onVerify: () -> String) {
     var selectedAction by remember { mutableStateOf("READY") }
     val pageSize = remember { NativeSubstrate.pageSizeBytes() }
     val wideLayout = LocalConfiguration.current.screenWidthDp >= 720
@@ -114,7 +127,13 @@ private fun ConverterHostScreen(onLaunch: () -> Unit) {
             Spacer(Modifier.height(10.dp))
             StatusPanel(selectedAction)
             Spacer(Modifier.height(8.dp))
-            ActionBar(onSelect = { selectedAction = it })
+            ActionBar(onSelect = { action ->
+                selectedAction = when (action) {
+                    "VERIFY" -> onVerify()
+                    "LAUNCH" -> { onLaunch(); "Opening packaged local viewport" }
+                    else -> "$action • not implemented yet"
+                }
+            })
         }
     }
 }
@@ -141,10 +160,7 @@ private fun HeaderPanel(wide: Boolean) {
 }
 
 @Composable
-private fun RepositoryPanel(
-    modifier: Modifier = Modifier,
-    onAction: () -> Unit,
-) {
+private fun RepositoryPanel(modifier: Modifier = Modifier, onAction: () -> Unit) {
     SectionPanel("REPOSITORY", modifier) {
         Text("Mount a local static app bundle", color = Muted, style = MaterialTheme.typography.bodySmall)
         Spacer(Modifier.height(10.dp))
@@ -156,45 +172,22 @@ private fun RepositoryPanel(
 }
 
 @Composable
-private fun ProgramsPanel(
-    modifier: Modifier = Modifier,
-    onLaunch: () -> Unit,
-    onPackage: () -> Unit,
-) {
+private fun ProgramsPanel(modifier: Modifier = Modifier, onLaunch: () -> Unit, onPackage: () -> Unit) {
     SectionPanel("PROGRAMS", modifier) {
-        ProgramCard(
-            name = "CORPSE DESKTOP VIEWPORT",
-            detail = "Packaged local HTML placeholder",
-            status = "READY",
-            onLaunch = onLaunch,
-            onPackage = onPackage,
-        )
+        ProgramCard("CORPSE DESKTOP VIEWPORT", "Packaged local HTML placeholder", "READY", onLaunch, onPackage)
         Spacer(Modifier.height(8.dp))
-        ProgramCard(
-            name = "FUTURE WORKSPACE",
-            detail = "No imported workspace mounted",
-            status = "STANDBY",
-            onLaunch = null,
-            onPackage = null,
-        )
+        ProgramCard("FUTURE WORKSPACE", "No imported workspace mounted", "STANDBY", null, null)
         Spacer(Modifier.height(8.dp))
         OutlineAction("[+] IMPORT REPOSITORY DIRECTORY", onPackage)
     }
 }
 
 @Composable
-private fun ProgramCard(
-    name: String,
-    detail: String,
-    status: String,
-    onLaunch: (() -> Unit)?,
-    onPackage: (() -> Unit)?,
-) {
+private fun ProgramCard(name: String, detail: String, status: String, onLaunch: (() -> Unit)?, onPackage: (() -> Unit)?) {
     Column(
         modifier = Modifier.fillMaxWidth()
             .border(1.dp, Crimson.copy(alpha = if (status == "READY") 0.75f else 0.3f), RoundedCornerShape(8.dp))
-            .background(PanelRaised, RoundedCornerShape(8.dp))
-            .padding(12.dp),
+            .background(PanelRaised, RoundedCornerShape(8.dp)).padding(12.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
@@ -228,10 +221,7 @@ private fun ArchitecturePanel(modifier: Modifier = Modifier, pageSize: Int) {
 
 @Composable
 private fun ArchitectureRow(title: String, detail: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
+    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically) {
         Text("◇", color = Crimson, modifier = Modifier.width(25.dp))
         Column {
             Text(title, color = Steel, style = MaterialTheme.typography.labelMedium)
@@ -271,16 +261,10 @@ private fun MemoryTier(tier: String, capacity: String, detail: String) {
 }
 
 @Composable
-private fun SectionPanel(
-    title: String,
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit,
-) {
+private fun SectionPanel(title: String, modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
     Column(
-        modifier = modifier.fillMaxWidth()
-            .border(1.dp, Crimson.copy(alpha = 0.55f), CutCornerShape(10.dp))
-            .background(Panel, CutCornerShape(10.dp))
-            .padding(12.dp),
+        modifier = modifier.fillMaxWidth().border(1.dp, Crimson.copy(alpha = 0.55f), CutCornerShape(10.dp))
+            .background(Panel, CutCornerShape(10.dp)).padding(12.dp),
         content = {
             Text("/ $title ///", color = Crimson, fontFamily = FontFamily.Monospace, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleSmall)
             Spacer(Modifier.height(8.dp))
@@ -291,36 +275,24 @@ private fun SectionPanel(
 
 @Composable
 private fun OutlineAction(label: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth().height(42.dp),
-        shape = CutCornerShape(7.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PanelRaised, contentColor = Steel),
-    ) {
+    Button(onClick = onClick, modifier = Modifier.fillMaxWidth().height(42.dp), shape = CutCornerShape(7.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = PanelRaised, contentColor = Steel)) {
         Text(label, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.labelSmall)
     }
 }
 
 @Composable
 private fun SmallAction(label: String, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        shape = CutCornerShape(5.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Crimson.copy(alpha = 0.88f)),
-    ) {
+    Button(onClick = onClick, shape = CutCornerShape(5.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Crimson.copy(alpha = 0.88f))) {
         Text(label, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.labelSmall)
     }
 }
 
 @Composable
 private fun StatusPanel(message: String) {
-    Text(
-        text = "[STATUS] $message",
-        modifier = Modifier.fillMaxWidth().background(PanelRaised, RoundedCornerShape(5.dp)).padding(9.dp),
-        color = if (message == "READY") Green else Muted,
-        fontFamily = FontFamily.Monospace,
-        style = MaterialTheme.typography.labelSmall,
-    )
+    Text(message, modifier = Modifier.fillMaxWidth().background(PanelRaised, RoundedCornerShape(5.dp)).padding(9.dp),
+        color = if (message == "READY") Green else Muted, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.labelSmall)
 }
 
 @Composable
@@ -328,12 +300,8 @@ private fun ActionBar(onSelect: (String) -> Unit) {
     val actions = listOf("LOAD REPO", "VERIFY", "LAUNCH", "BACKUP", "MANAGE")
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(5.dp)) {
         actions.forEach { action ->
-            Button(
-                onClick = { onSelect(action) },
-                modifier = Modifier.weight(1f).height(48.dp),
-                shape = CutCornerShape(7.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Panel, contentColor = Crimson),
-            ) {
+            Button(onClick = { onSelect(action) }, modifier = Modifier.weight(1f).height(48.dp), shape = CutCornerShape(7.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Panel, contentColor = Crimson)) {
                 Text(action, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.labelSmall)
             }
         }
