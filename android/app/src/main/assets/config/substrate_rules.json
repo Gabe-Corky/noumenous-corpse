@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "baseline_state": 199,
+  "fractal_bits": 5,
+  "node_bits": 3,
+  "slab_count": 12,
+  "slab_bytes": 67108864,
+  "minimum_page_size_bytes": 4096,
+  "crc32c_test_vector": 3808858755
+}
