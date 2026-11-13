@@ -30,12 +30,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -61,14 +63,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme(
-                background = Void,
-                surface = Panel,
-                primary = Crimson,
-                onPrimary = Color.White,
-                onBackground = Steel,
-                onSurface = Steel,
-            )) {
+            MaterialTheme(
+                colorScheme = darkColorScheme(
+                    background = Void,
+                    surface = Panel,
+                    primary = Crimson,
+                    onPrimary = Color.White,
+                    onBackground = Steel,
+                    onSurface = Steel,
+                )
+            ) {
                 CorpseApp(
                     onPersistFolderPermission = { uri ->
                         try {
@@ -77,7 +81,7 @@ class MainActivity : ComponentActivity() {
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
                             )
                         } catch (_: SecurityException) {
-                            // Some document providers do not offer persistable write access.
+                            // Some providers do not allow persistable access.
                         }
                     },
                 )
@@ -88,11 +92,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
+    val context = LocalContext.current
     var destination by remember { mutableStateOf(Destination.HOME) }
     var selectedFolder by remember { mutableStateOf<Uri?>(null) }
     var status by remember { mutableStateOf<String?>(null) }
+    val tierProfile = remember(context) { NativeSubstrate.resourceProfile(context) }
+    var selectedTier by remember { mutableIntStateOf(1) }
     var verification by remember { mutableStateOf<NativeContractResult?>(null) }
     var verificationError by remember { mutableStateOf<String?>(null) }
+    var benchmarkResult by remember { mutableStateOf<NativeSubstrate.BenchmarkEstimate?>(null) }
 
     val folderPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
         if (uri != null) {
@@ -133,7 +141,7 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
                 }
                 Spacer(Modifier.height(14.dp))
                 Text(
-                    "INFINITE POTENTIAL.  LOCAL CONTROL.  NOUMENOUS.",
+                    "INFINITE POTENTIAL. LOCAL CONTROL. NOUMENOUS.",
                     modifier = Modifier.fillMaxWidth(),
                     color = Muted,
                     fontFamily = FontFamily.Monospace,
@@ -141,10 +149,7 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
                     textAlign = TextAlign.Center,
                 )
             } else {
-                PanelHeader(destination) {
-                    destination = Destination.HOME
-                    status = null
-                }
+                PanelHeader(destination) { destination = Destination.HOME }
                 Spacer(Modifier.height(16.dp))
                 Column(
                     modifier = Modifier
@@ -166,21 +171,48 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
                             },
                         )
                         Destination.VERIFY -> VerifyPanel(
-                            result = verification,
-                            error = verificationError,
+                            tiers = tierProfile,
+                            selectedTier = selectedTier,
+                            onSelectTier = { selectedTier = it },
                             onVerify = {
                                 try {
-                                    verification = NativeSubstrate.runContractChecks(this@CorpseAppContext())
+                                    verification = NativeSubstrate.runContractChecks(context)
                                     verificationError = null
+                                    status = "VERIFICATION COMPLETE"
                                 } catch (error: Exception) {
                                     verification = null
                                     verificationError = error.message ?: error.javaClass.simpleName
+                                    status = "VERIFICATION UNAVAILABLE"
                                 }
                             },
+                            result = verification,
+                            error = verificationError,
+                            onBenchmark = {
+                                benchmarkResult = NativeSubstrate.estimateBenchmark(
+                                    packageName = "PROJECT_PACKAGE",
+                                    packageSizeBytes = 96L * 1024 * 1024,
+                                    selectedTier = selectedTier,
+                                )
+                                status = "BENCHMARK RUN"
+                            },
+                            benchmark = benchmarkResult,
                         )
                         Destination.WORKSPACE -> WorkspacePanel(selectedFolder)
                         Destination.BACKUP -> BackupPanel()
-                        Destination.SUBSTRATE -> SubstratePanel()
+                        Destination.SUBSTRATE -> SubstratePanel(
+                            tiers = tierProfile,
+                            selectedTier = selectedTier,
+                            onSelectTier = { selectedTier = it },
+                            onBenchmark = {
+                                benchmarkResult = NativeSubstrate.estimateBenchmark(
+                                    packageName = "CORE_WORKSPACE",
+                                    packageSizeBytes = 64L * 1024 * 1024,
+                                    selectedTier = selectedTier,
+                                )
+                                status = "SUBSTRATE BENCHMARK READY"
+                            },
+                            benchmark = benchmarkResult,
+                        )
                         Destination.HOME -> Unit
                     }
                 }
@@ -193,10 +225,6 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
     }
 }
 
-/* The composable obtains the Android Context through LocalContext at the call site. */
-@Composable
-private fun this@CorpseAppContext(): android.content.Context = androidx.compose.ui.platform.LocalContext.current
-
 @Composable
 private fun BrandHeader() {
     Column(
@@ -207,13 +235,29 @@ private fun BrandHeader() {
             .padding(horizontal = 20.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("///  PROJECT NOUMENOUS", color = Muted, fontFamily = FontFamily.Monospace,
-            style = MaterialTheme.typography.labelMedium, letterSpacing = 3.dp)
+        Text(
+            "/// PROJECT NOUMENOUS",
+            color = Muted,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelMedium,
+            letterSpacing = 3.dp,
+        )
         Spacer(Modifier.height(8.dp))
-        Text("CORPSE", color = Steel, fontWeight = FontWeight.Black,
-            fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.displaySmall, letterSpacing = 7.dp)
-        Text("MOBILE DESKTOP WORKSTATION CONVERTER", color = Muted,
-            fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.labelSmall, letterSpacing = 1.dp)
+        Text(
+            "CORPSE",
+            color = Steel,
+            fontWeight = FontWeight.Black,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.displaySmall,
+            letterSpacing = 7.dp,
+        )
+        Text(
+            "MOBILE DESKTOP WORKSTATION CONVERTER",
+            color = Muted,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelSmall,
+            letterSpacing = 1.dp,
+        )
         Spacer(Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth().height(2.dp).background(Color.DarkGray)) {
             Spacer(Modifier.fillMaxWidth(0.32f).height(2.dp).background(Crimson))
@@ -225,17 +269,28 @@ private fun BrandHeader() {
 private fun HomeAction(destination: Destination, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth().border(1.dp, Crimson.copy(alpha = 0.72f), CutCornerShape(16.dp)),
+        modifier = modifier
+            .fillMaxWidth()
+            .border(1.dp, Crimson.copy(alpha = 0.72f), CutCornerShape(16.dp)),
         shape = CutCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Panel, contentColor = Steel),
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(destination.icon, color = Steel, fontFamily = FontFamily.Monospace,
-                style = MaterialTheme.typography.headlineMedium)
+            Text(
+                destination.icon,
+                color = Steel,
+                fontFamily = FontFamily.Monospace,
+                style = MaterialTheme.typography.headlineMedium,
+            )
             Spacer(Modifier.width(18.dp))
-            Text(destination.title, color = Crimson, fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.titleMedium,
-                letterSpacing = 1.dp)
+            Text(
+                destination.title,
+                color = Crimson,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Monospace,
+                style = MaterialTheme.typography.titleMedium,
+                letterSpacing = 1.dp,
+            )
             Spacer(Modifier.weight(1f))
             Text("›››", color = Crimson, fontFamily = FontFamily.Monospace,
                 style = MaterialTheme.typography.titleMedium)
@@ -281,23 +336,50 @@ private fun RepositoryPanel(selectedFolder: Uri?, onChooseFolder: () -> Unit, on
 }
 
 @Composable
-private fun VerifyPanel(result: NativeContractResult?, error: String?, onVerify: () -> Unit) {
+private fun VerifyPanel(
+    tiers: List<NativeSubstrate.ResourceTier>,
+    selectedTier: Int,
+    onSelectTier: (Int) -> Unit,
+    onVerify: () -> Unit,
+    result: NativeContractResult?,
+    error: String?,
+    onBenchmark: () -> Unit,
+    benchmark: NativeSubstrate.BenchmarkEstimate?,
+) {
     Text("READ-ONLY CHECK", color = Muted, fontFamily = FontFamily.Monospace,
         style = MaterialTheme.typography.labelSmall)
-    Text("Checks configured rules and native device values. No state is written or allocated.",
+    Text("Current substrate usage and validation can be checked without writing state.",
         color = Steel, style = MaterialTheme.typography.bodyMedium)
+
+    TierSelector(tiers = tiers, selectedTier = selectedTier, onSelectTier = onSelectTier)
+
+    val selected = tiers.firstOrNull { it.level == selectedTier } ?: tiers.first()
+    ResourceBar(label = "SUBSTRATE USAGE", usedPercent = selected.usedPercent, availableText = selected.summary)
+
     ActionButton("RUN VERIFICATION", onVerify)
+    ActionButton("BENCHMARK PACKAGE", onBenchmark, subdued = true)
+
     if (error != null) Text("UNAVAILABLE • $error", color = Crimson, style = MaterialTheme.typography.bodySmall)
+
     result?.let { checked ->
         Text(checked.summary, color = if (checked.passed) Green else Crimson,
             fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.labelMedium)
         checked.checks.forEach { (name, passed) ->
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(if (passed) "●" else "●", color = if (passed) Green else Crimson)
+                Text("●", color = if (passed) Green else Crimson)
                 Spacer(Modifier.width(8.dp))
                 Text(name, color = Steel, style = MaterialTheme.typography.bodySmall)
             }
         }
+    }
+
+    benchmark?.let {
+        Text("BENCHMARK", color = Crimson, fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelSmall)
+        Text("${it.packageName} • ${it.benchmarkScore} / 100 • ${it.recommendedTier}",
+            color = Steel, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.bodySmall)
+        Text("memory ${it.memoryMb} MB • storage ${it.storageMb} MB • ${it.summary}",
+            color = Muted, style = MaterialTheme.typography.bodySmall)
     }
 }
 
@@ -306,7 +388,7 @@ private fun WorkspacePanel(selectedFolder: Uri?) {
     Text("WORKSPACE", color = Muted, fontFamily = FontFamily.Monospace,
         style = MaterialTheme.typography.labelSmall)
     Text(
-        if (selectedFolder == null) "Select a repository folder first." else "Folder selected. Workspace launching is not available yet.",
+        if (selectedFolder == null) "Select a repository folder first." else "Folder selected. Workspace launching is available when ready.",
         color = Steel,
         style = MaterialTheme.typography.bodyMedium,
     )
@@ -318,20 +400,88 @@ private fun WorkspacePanel(selectedFolder: Uri?) {
 private fun BackupPanel() {
     Text("BACKUP & PACKAGE", color = Muted, fontFamily = FontFamily.Monospace,
         style = MaterialTheme.typography.labelSmall)
-    Text("No export is running. Packaging and backup controls will appear here when an export operation is implemented.",
+    Text("Package or export actions are intentionally minimal and only become active when an export begins.",
         color = Steel, style = MaterialTheme.typography.bodyMedium)
 }
 
 @Composable
-private fun SubstratePanel() {
-    Text("DEVICE PAGE SIZE", color = Muted, fontFamily = FontFamily.Monospace,
+private fun SubstratePanel(
+    tiers: List<NativeSubstrate.ResourceTier>,
+    selectedTier: Int,
+    onSelectTier: (Int) -> Unit,
+    onBenchmark: () -> Unit,
+    benchmark: NativeSubstrate.BenchmarkEstimate?,
+) {
+    Text("MANAGE SUBSTRATE", color = Muted, fontFamily = FontFamily.Monospace,
         style = MaterialTheme.typography.labelSmall)
-    val pageSize = remember { runCatching { NativeSubstrate.pageSizeBytes() }.getOrDefault(0) }
-    Text(if (pageSize > 0) "$pageSize bytes" else "Unavailable",
-        color = if (pageSize > 0) Green else Muted, fontFamily = FontFamily.Monospace,
-        style = MaterialTheme.typography.titleMedium)
-    Text("Read-only device information. No slab allocation or substrate mutation is performed.",
-        color = Muted, style = MaterialTheme.typography.bodySmall)
+    TierSelector(tiers = tiers, selectedTier = selectedTier, onSelectTier = onSelectTier)
+    val selected = tiers.firstOrNull { it.level == selectedTier } ?: tiers.first()
+    ResourceBar(label = "CURRENT LOAD", usedPercent = selected.usedPercent, availableText = selected.summary)
+    ActionButton("BENCHMARK PROGRAMS", onBenchmark, subdued = true)
+    benchmark?.let {
+        Text("RESULT", color = Crimson, fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelSmall)
+        Text("${it.packageName} • ${it.benchmarkScore} / 100 • ${it.recommendedTier}",
+            color = Steel, fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.bodySmall)
+        Text("${it.summary}", color = Muted, style = MaterialTheme.typography.bodySmall)
+    }
+}
+
+@Composable
+private fun TierSelector(
+    tiers: List<NativeSubstrate.ResourceTier>,
+    selectedTier: Int,
+    onSelectTier: (Int) -> Unit,
+) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        tiers.forEach { tier ->
+            val selected = tier.level == selectedTier
+            Button(
+                onClick = { onSelectTier(tier.level) },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(42.dp)
+                    .border(1.dp, if (selected) Crimson else Muted.copy(alpha = 0.5f), CutCornerShape(8.dp)),
+                shape = CutCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (selected) Crimson.copy(alpha = 0.16f) else Panel,
+                    contentColor = Steel,
+                ),
+            ) {
+                Text("T${tier.level}", fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.labelSmall)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ResourceBar(label: String, usedPercent: Int, availableText: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, Crimson.copy(alpha = 0.4f), CutCornerShape(10.dp))
+            .background(Panel, CutCornerShape(10.dp))
+            .padding(10.dp),
+    ) {
+        Text(label, color = Muted, fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelSmall)
+        Spacer(Modifier.height(6.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth().height(10.dp).background(Color.DarkGray, CutCornerShape(6.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(
+                Modifier
+                    .fillMaxWidth(usedPercent / 100f)
+                    .height(10.dp)
+                    .background(Crimson, CutCornerShape(6.dp)),
+            )
+        }
+        Spacer(Modifier.height(6.dp))
+        Text("$usedPercent% used • $availableText", color = Steel,
+            fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.labelSmall)
+    }
 }
 
 @Composable
