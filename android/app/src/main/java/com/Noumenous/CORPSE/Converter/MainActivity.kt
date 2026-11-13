@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -50,7 +49,6 @@ private val Void = Color(0xFF050507)
 private val Panel = Color(0xFF0D0E12)
 private val PanelSoft = Color(0xFF12141B)
 private val Crimson = Color(0xFFFF1728)
-private val CrimsonSoft = Color(0xFFB30C16)
 private val Steel = Color(0xFFD9DEE8)
 private val Muted = Color(0xFF8E949E)
 private val Green = Color(0xFF7BE5A0)
@@ -68,7 +66,6 @@ private enum class Destination(val label: String, val icon: String) {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             MaterialTheme(
                 colorScheme = darkColorScheme(
@@ -88,9 +85,9 @@ class MainActivity : ComponentActivity() {
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
                             )
                         } catch (_: SecurityException) {
-                            // ignore non-persistable providers
+                            // Non-persistable providers are ignored.
                         }
-                    }
+                    },
                 )
             }
         }
@@ -126,7 +123,7 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(Void)
-                .padding(horizontal = 16.dp, vertical = 14.dp)
+                .padding(horizontal = 16.dp, vertical = 14.dp),
         ) {
             if (destination == Destination.HOME) {
                 BrandHeader()
@@ -145,7 +142,7 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
                             onClick = {
                                 destination = action
                                 statusMessage = null
-                            }
+                            },
                         )
                     }
                 }
@@ -173,16 +170,14 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
                     when (destination) {
-                        Destination.REPOSITORY -> {
-                            RepositoryPanel(
-                                selectedFolder = selectedFolder,
-                                onChooseFolder = { folderPicker.launch(null) },
-                                onClearFolder = {
-                                    selectedFolder = null
-                                    statusMessage = "FOLDER CLEARED"
-                                }
-                            )
-                        }
+                        Destination.REPOSITORY -> RepositoryPanel(
+                            selectedFolder = selectedFolder,
+                            onChooseFolder = { folderPicker.launch(null) },
+                            onClearFolder = {
+                                selectedFolder = null
+                                statusMessage = "FOLDER CLEARED"
+                            },
+                        )
                         Destination.VERIFY -> {
                             val selectedTier = tiers.firstOrNull { it.level == tierIndex } ?: tiers.first()
                             VerifyPanel(
@@ -213,12 +208,8 @@ private fun CorpseApp(onPersistFolderPermission: (Uri) -> Unit) {
                                 benchmark = benchmark,
                             )
                         }
-                        Destination.WORKSPACE -> {
-                            WorkspacePanel(selectedFolder = selectedFolder)
-                        }
-                        Destination.BACKUP -> {
-                            BackupPanel()
-                        }
+                        Destination.WORKSPACE -> WorkspacePanel(selectedFolder = selectedFolder)
+                        Destination.BACKUP -> BackupPanel()
                         Destination.SUBSTRATE -> {
                             val selectedTier = tiers.firstOrNull { it.level == tierIndex } ?: tiers.first()
                             SubstratePanel(
@@ -286,13 +277,13 @@ private fun BrandHeader() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp)
-                .background(Color.DarkGray)
+                .background(Color.DarkGray),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(0.35f)
                     .height(2.dp)
-                    .background(Crimson)
+                    .background(Crimson),
             )
         }
     }
@@ -319,10 +310,7 @@ private fun ActionTile(icon: String, title: String, onClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Box(
-            modifier = Modifier.size(42.dp),
-            contentAlignment = Alignment.Center,
-        ) {
+        Box(modifier = Modifier.size(42.dp), contentAlignment = Alignment.Center) {
             Text(
                 text = icon,
                 color = Steel,
@@ -339,7 +327,6 @@ private fun ActionTile(icon: String, title: String, onClick: () -> Unit) {
             fontFamily = FontFamily.Monospace,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
-            lineHeight = MaterialTheme.typography.titleMedium.lineHeight,
         )
 
         Text(
@@ -390,8 +377,12 @@ private fun RepositoryPanel(
     onChooseFolder: () -> Unit,
     onClearFolder: () -> Unit,
 ) {
-    Text("WORKSPACE SOURCE", color = Muted, fontFamily = FontFamily.Monospace,
-        style = MaterialTheme.typography.labelSmall)
+    Text(
+        text = "WORKSPACE SOURCE",
+        color = Muted,
+        fontFamily = FontFamily.Monospace,
+        style = MaterialTheme.typography.labelSmall,
+    )
 
     Text(
         text = selectedFolder?.lastPathSegment ?: "No folder selected",
@@ -421,10 +412,18 @@ private fun VerifyPanel(
     onBenchmark: () -> Unit,
     benchmark: NativeSubstrate.BenchmarkEstimate?,
 ) {
-    Text("CURRENT RESOURCE USE", color = Muted, fontFamily = FontFamily.Monospace,
-        style = MaterialTheme.typography.labelSmall)
+    Text(
+        text = "CURRENT RESOURCE USE",
+        color = Muted,
+        fontFamily = FontFamily.Monospace,
+        style = MaterialTheme.typography.labelSmall,
+    )
     TierSelector(tiers = tiers, selectedTier = selectedTier.level, onSelectTier = onSelectTier)
-    ResourceBar(label = "SUBSTRATE", usedPercent = selectedTier.usedPercent, detail = selectedTier.summary)
+    ResourceBar(
+        label = "SUBSTRATE",
+        usedPercent = selectedTier.usedPercent,
+        detail = selectedTier.summary,
+    )
 
     ActionButton(label = "RUN VERIFICATION", onClick = onVerify)
     ActionButton(label = "BENCHMARK PACKAGE", onClick = onBenchmark, subdued = true)
@@ -449,18 +448,20 @@ private fun VerifyPanel(
         }
     }
 
-    benchmark?.let {
-        BenchmarkCard(benchmark = it)
-    }
+    benchmark?.let { BenchmarkCard(benchmark = it) }
 }
 
 @Composable
 private fun WorkspacePanel(selectedFolder: Uri?) {
-    Text("WORKSPACE STATE", color = Muted, fontFamily = FontFamily.Monospace,
-        style = MaterialTheme.typography.labelSmall)
+    Text(
+        text = "WORKSPACE STATE",
+        color = Muted,
+        fontFamily = FontFamily.Monospace,
+        style = MaterialTheme.typography.labelSmall,
+    )
 
     val message = if (selectedFolder == null) {
-        "No workspace selected." 
+        "No workspace selected."
     } else {
         "Workspace ready for launch."
     }
@@ -479,8 +480,12 @@ private fun WorkspacePanel(selectedFolder: Uri?) {
 
 @Composable
 private fun BackupPanel() {
-    Text("PACKAGE", color = Muted, fontFamily = FontFamily.Monospace,
-        style = MaterialTheme.typography.labelSmall)
+    Text(
+        text = "PACKAGE",
+        color = Muted,
+        fontFamily = FontFamily.Monospace,
+        style = MaterialTheme.typography.labelSmall,
+    )
     Text(
         text = "Only run export and packaging actions when a build is active. Otherwise the panel stays minimal.",
         color = Steel,
@@ -496,13 +501,20 @@ private fun SubstratePanel(
     onBenchmark: () -> Unit,
     benchmark: NativeSubstrate.BenchmarkEstimate?,
 ) {
-    Text("PROGRAM RESOURCE LOAD", color = Muted, fontFamily = FontFamily.Monospace,
-        style = MaterialTheme.typography.labelSmall)
+    Text(
+        text = "PROGRAM RESOURCE LOAD",
+        color = Muted,
+        fontFamily = FontFamily.Monospace,
+        style = MaterialTheme.typography.labelSmall,
+    )
     TierSelector(tiers = tiers, selectedTier = selectedTier.level, onSelectTier = onSelectTier)
-    ResourceBar(label = "LOAD", usedPercent = selectedTier.usedPercent, detail = selectedTier.summary)
+    ResourceBar(
+        label = "LOAD",
+        usedPercent = selectedTier.usedPercent,
+        detail = selectedTier.summary,
+    )
 
     ActionButton(label = "BENCHMARK PROGRAMS", onClick = onBenchmark, subdued = true)
-
     benchmark?.let { BenchmarkCard(benchmark = it) }
 }
 
@@ -531,8 +543,11 @@ private fun TierSelector(
                     contentColor = Steel,
                 ),
             ) {
-                Text("T${tier.level}", fontFamily = FontFamily.Monospace,
-                    style = MaterialTheme.typography.labelSmall)
+                Text(
+                    text = "T${tier.level}",
+                    fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.labelSmall,
+                )
             }
         }
     }
@@ -547,20 +562,24 @@ private fun ResourceBar(label: String, usedPercent: Int, detail: String) {
             .background(PanelSoft, CutCornerShape(10.dp))
             .padding(10.dp),
     ) {
-        Text(text = label, color = Muted, fontFamily = FontFamily.Monospace,
-            style = MaterialTheme.typography.labelSmall)
+        Text(
+            text = label,
+            color = Muted,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelSmall,
+        )
         Spacer(Modifier.height(6.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(10.dp)
-                .background(DarkLine, CutCornerShape(6.dp))
+                .background(DarkLine, CutCornerShape(6.dp)),
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth((usedPercent / 100f).coerceIn(0f, 1f))
                     .height(10.dp)
-                    .background(Crimson, CutCornerShape(6.dp))
+                    .background(Crimson, CutCornerShape(6.dp)),
             )
         }
         Spacer(Modifier.height(6.dp))
